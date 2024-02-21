@@ -1,6 +1,7 @@
 package org.oppia.android.domain.topic
 
 import android.graphics.Color
+import android.util.Log
 import org.json.JSONObject
 import org.oppia.android.app.model.ChapterPlayState
 import org.oppia.android.app.model.ChapterProgress
@@ -799,6 +800,8 @@ class TopicListController @Inject constructor(
     val storySummary = topic.storyList.find { summary -> summary.storyId == storyId }!!
     // If the chapterProgress equals null that means the chapter has no progress associated with
     // it because it is not yet started.
+    Log.d("Topicclass2", "createPromotedStory: Topic promoted - $topic")
+    Log.d("Topicclass2", "createPromotedStory: Topic promoted class - ${topic.className}")
     return PromotedStory.newBuilder()
       .setStoryId(storyId)
       .setStoryWrittenTranslationContext(
@@ -820,6 +823,7 @@ class TopicListController @Inject constructor(
       .setLessonThumbnail(storySummary.storyThumbnail)
       .setTopicId(topic.topicId)
       .setTopicTitle(topic.title)
+      .setTopicClass(topic.className)
       .setCompletedChapterCount(completedChapterCount)
       .setTotalChapterCount(totalChapterCount)
       .setIsTopicLearned(isTopicConsideredCompleted)
@@ -827,6 +831,8 @@ class TopicListController @Inject constructor(
       .setExplorationId(nextChapterSummary.explorationId)
       .setChapterPlayState(nextChapterProgress?.chapterPlayState ?: ChapterPlayState.NOT_STARTED)
       .build()
+
+
   }
 }
 

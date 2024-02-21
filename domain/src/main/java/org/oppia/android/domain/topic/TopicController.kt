@@ -1,6 +1,7 @@
 package org.oppia.android.domain.topic
 
 import android.graphics.Color
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import org.oppia.android.app.model.ChapterPlayState
@@ -472,6 +473,7 @@ class TopicController @Inject constructor(
           this.topicId = topicId
           putAllWrittenTranslations(topicRecord.writtenTranslationsMap)
           title = topicRecord.translatableTitle
+          className = topicRecord.className
           description = topicRecord.translatableDescription
           addAllStory(stories)
           topicThumbnail = createTopicThumbnailFromProto(topicId, topicRecord.topicThumbnail)
@@ -554,6 +556,14 @@ class TopicController @Inject constructor(
       contentId = "title"
       html = topicData.getStringFromObject("topic_name")
     }.build()
+
+    Log.d("Topicidlog", "createTopicFromJson: topic id is - $topicId")
+
+    val topicClass = topicData.getStringFromObject("class_name")
+//    val topicClass = "tadaaa!"
+
+    Log.d("Topicclass", "createTopicFromJson: Topic class - $topicClass")
+
     val topicDescription = SubtitledHtml.newBuilder().apply {
       contentId = "description"
       html = topicData.getStringFromObject("topic_description")
@@ -562,6 +572,7 @@ class TopicController @Inject constructor(
     return Topic.newBuilder()
       .setTopicId(topicId)
       .setTitle(topicTitle)
+      .setClassName(topicClass)
       .setDescription(topicDescription)
       .addAllStory(storySummaryList)
       .setTopicThumbnail(createTopicThumbnailFromJson(topicData))

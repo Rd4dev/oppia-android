@@ -3,6 +3,7 @@ package org.oppia.android.app.home.promotedlist
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import org.oppia.android.R
@@ -34,6 +35,14 @@ class PromotedStoryViewModel(
       promotedStory.topicTitle, promotedStory.topicWrittenTranslationContext
     )
   }
+  val topicClass: String by lazy {
+    /*translationController.extractString(
+      promotedStory.topicClass, promotedStory.topicWrittenTranslationContext
+    )*/
+    promotedStory.topicClass
+//    "subtle"
+  }
+
   val nextChapterTitle by lazy {
     translationController.extractString(
       promotedStory.nextChapterTitle, promotedStory.nextChapterWrittenTranslationContext

@@ -22,6 +22,9 @@ message Topic {
   // The topic's title.
   SubtitledHtml title = 10;
 
+  // class name
+  string class_name = 34;
+
   // A brief description of the topic.
   SubtitledHtml description = 11;
 
@@ -236,6 +239,8 @@ message CompletedStory {
   // The title of the story being completed.
   SubtitledHtml story_title = 8;
 
+  string class_name = 73;
+
   // The ID of the topic which contains this story.
   string topic_id = 3;
 
@@ -286,6 +291,9 @@ message PromotedStory {
   // The title of the topic this story is part of.
   SubtitledHtml topic_title = 16;
 
+  // class
+  string topic_class = 43;
+
   // The title of the next chapter (exploration title) to complete.
   SubtitledHtml next_chapter_title = 17;
 
@@ -330,6 +338,8 @@ message TopicSummary {
 
   // The title of the topic.
   SubtitledHtml title = 8;
+
+  string classname = 54;
 
   // The structural version of the topic.
   int32 version = 3;
@@ -499,6 +509,8 @@ message Subtopic {
   // The title of the subtopic.
   SubtitledHtml title = 6;
 
+  string classname = 84;
+
   // The list of skill ids associated with the subtopic.
   repeated string skill_ids = 3;
 
@@ -571,6 +583,8 @@ message TopicRecord {
 
   // The title of the topic.
   SubtitledHtml translatable_title = 9;
+
+  string class_name = 67;
 
   // The topic's description.
   SubtitledHtml translatable_description = 10;
@@ -650,6 +664,8 @@ message ChapterRecord {
 message SubtopicRecord {
   // The title corresponding to the subtopic.
   SubtitledHtml title = 7;
+
+  string classname = 93;
 
   // The core explanation of the subtopic being revised.
   SubtitledHtml page_contents = 2;

@@ -82,6 +82,24 @@
           android:textSize="@dimen/promoted_story_card_text_size" />
 
         <TextView
+          android:id="@+id/topic_class_name_text_view"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="@dimen/promoted_story_card_margin_top"
+          android:layout_marginEnd="16dp"
+          android:ellipsize="end"
+          android:fontFamily="sans-serif-light"
+          android:maxLines="1"
+          android:paddingHorizontal="8dp"
+          android:paddingVertical="4dp"
+          android:background="@drawable/rounded_button_blue_chip"
+          android:text="@{viewModel.topicClass}"
+          android:textAllCaps="true"
+          android:textColor="@color/component_color_shared_story_card_topic_name_text_color"
+          android:textSize="12sp" />
+
+        <TextView
           android:id="@+id/topic_name_text_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

@@ -8,7 +8,7 @@
     "id": "umPkwp0L1M0-",
     "prerequisite_skill_ids": [],
     "thumbnail_bg_color": "#d68f78",
-    "outline": "Matthew learns about fractions.",
+    "outline": "T Matthew learns about fractions.",
     "title": "What is a Fraction?",
     "acquired_skill_ids": []
   }, {
@@ -20,10 +20,10 @@
     "id": "MjZzEVOG47_1",
     "prerequisite_skill_ids": [],
     "thumbnail_bg_color": "#d678f8",
-    "outline": "Matthew learns about equal parts in fractions.",
+    "outline": "T Matthew learns about equal parts in fractions.",
     "title": "The Meaning of Equal Parts",
     "acquired_skill_ids": []
   }],
-  "story_title": "Matthew Goes to the Bakery",
+  "story_title": "T Matthew Goes to the Bakery",
   "story_description": "<removed>"
 }

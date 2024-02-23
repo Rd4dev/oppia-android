@@ -11,6 +11,7 @@ import org.oppia.android.app.customview.SegmentedCircularProgressView
 import org.oppia.android.app.customview.SurveyOnboardingBackgroundView
 import org.oppia.android.app.home.promotedlist.ComingSoonTopicsListView
 import org.oppia.android.app.home.promotedlist.PromotedStoryListView
+//import org.oppia.android.app.home.topiclist.AllTopicListView
 import org.oppia.android.app.player.state.DragDropSortInteractionView
 import org.oppia.android.app.player.state.ImageRegionSelectionInteractionView
 import org.oppia.android.app.player.state.SelectionInteractionView
@@ -45,4 +46,5 @@ interface ViewComponentImpl : ViewComponent {
   fun inject(surveyOnboardingBackgroundView: SurveyOnboardingBackgroundView)
   fun inject(surveyMultipleChoiceOptionView: SurveyMultipleChoiceOptionView)
   fun inject(surveyNpsItemOptionView: SurveyNpsItemOptionView)
+//  fun inject(allTopicListView: AllTopicListView)
 }

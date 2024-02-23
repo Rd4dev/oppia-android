@@ -11,7 +11,7 @@
   "uncategorized_skill_ids": [],
   "additional_story_dicts": [],
   "topic_name": "Second Test Topic",
-  "class_name": "TEST",
+  "class_name": "Test",
   "topic_description": "A topic considering the various implications of having especially long topic descriptions. These descriptions almost certainly need to wrap, which should be interesting in the UI (especially on small screens). Consider also that there may even be multiple points pertaining to a topic, some of which may require expanding the description section in order to read the whole topic description.",
   "topic_id": "test_topic_id_1",
   "thumbnail_bg_color": "#000000",

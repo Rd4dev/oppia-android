@@ -26,6 +26,10 @@ class TopicSummaryViewModel(
     )
   }
 
+  val summaryClass: String by lazy {
+    topicSummary.classname
+  }
+
   private val outerMargin by lazy {
     activity.resources.getDimensionPixelSize(R.dimen.home_outer_margin)
   }

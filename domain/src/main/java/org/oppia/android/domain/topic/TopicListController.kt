@@ -258,10 +258,14 @@ class TopicListController @Inject constructor(
       contentId = "title"
       html = jsonObject.getStringFromObject("topic_name")
     }.build()
+
+    val topicClass = jsonObject.getStringFromObject("class_name")
+
     // No written translations are included since none are retrieved from JSON.
     return TopicSummary.newBuilder()
       .setTopicId(topicId)
       .setTitle(topicTitle)
+      .setClassname(topicClass)
       .setVersion(jsonObject.optInt("version"))
       .setTotalChapterCount(totalChapterCount)
       .setTopicThumbnail(createTopicThumbnailFromJson(jsonObject))

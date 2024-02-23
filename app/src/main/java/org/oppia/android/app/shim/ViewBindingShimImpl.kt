@@ -27,6 +27,8 @@ import org.oppia.android.databinding.SurveyNpsItemBinding
 import org.oppia.android.domain.translation.TranslationController
 import org.oppia.android.util.parser.html.HtmlParser
 import javax.inject.Inject
+import org.oppia.android.app.home.topiclist.TopicSummaryViewModel
+import org.oppia.android.databinding.TopicSummaryViewBinding
 
 /**
  * Creates bindings for Views in order to avoid View files directly depending on Binding files.
@@ -58,6 +60,21 @@ class ViewBindingShimImpl @Inject constructor(
   ) {
     val binding =
       DataBindingUtil.findBinding<PromotedStoryCardBinding>(view)!!
+    binding.viewModel = viewModel
+  }
+
+  override fun provideTopicSummaryCardInflatedView(
+    inflater: LayoutInflater,
+    parent: ViewGroup,
+    attachToParent: Boolean
+  ): View {
+    return TopicSummaryViewBinding.inflate(
+      LayoutInflater.from(parent.context), parent, attachToParent
+    ).root
+  }
+
+  override fun provideTopicSummaryViewModel(view: View, viewModel: TopicSummaryViewModel) {
+    val binding = DataBindingUtil.findBinding<TopicSummaryViewBinding>(view)!!
     binding.viewModel = viewModel
   }
 

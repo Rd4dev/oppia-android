@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+      name="viewModel"
+      type="org.oppia.android.app.home.topiclist.TopicSummaryViewModel" />
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <TextView
+        style="@style/TextViewStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/promoted_story_list_layout_margin_start"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-medium"
+        android:text="Testing"
+        android:textColor="@color/component_color_shared_primary_text_color"
+        android:textSize="14sp" />
+
+      <!--<org.oppia.android.app.home.topiclist.AllTopicListView
+        android:layout_width="200dp"
+        android:layout_height="200dp" />-->
+
+    </LinearLayout>
+
+  </LinearLayout>
+</layout>

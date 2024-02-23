@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.oppia.android.app.home.promotedlist.ComingSoonTopicsViewModel
 import org.oppia.android.app.home.promotedlist.PromotedStoryViewModel
+import org.oppia.android.app.home.topiclist.TopicSummaryViewModel
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.itemviewmodel.DragDropInteractionContentViewModel
 import org.oppia.android.app.player.state.itemviewmodel.SelectionInteractionContentViewModel
@@ -106,6 +107,17 @@ interface ViewBindingShim {
   fun providePromotedStoryViewModel(
     view: View,
     viewModel: PromotedStoryViewModel
+  )
+
+  fun provideTopicSummaryCardInflatedView(
+    inflater: LayoutInflater,
+    parent: ViewGroup,
+    attachToParent: Boolean
+  ): View
+
+  fun provideTopicSummaryViewModel(
+    view: View,
+    viewModel: TopicSummaryViewModel
   )
 
   /** Handles binding inflation for [ComingSoonTopicsListView]. */

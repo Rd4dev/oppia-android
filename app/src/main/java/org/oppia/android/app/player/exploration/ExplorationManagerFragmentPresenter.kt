@@ -1,5 +1,6 @@
 package org.oppia.android.app.player.exploration
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -29,6 +30,7 @@ class ExplorationManagerFragmentPresenter @Inject constructor(
     retrieveReadingTextSize().observe(
       fragment,
       { result ->
+        Log.d("readingprofiledata", "handleCreateView: Reading text size result - $result")
         (activity as DefaultFontSizeStateListener).onDefaultFontSizeLoaded(result)
       }
     )

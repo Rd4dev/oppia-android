@@ -1,5 +1,6 @@
 package org.oppia.android.app.options
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,7 @@ class ReadingTextSizeFragmentPresenter @Inject constructor(
 
   private fun updateTextSize(textSize: ReadingTextSize) {
     // The first branch of (when) will be used in the case of multipane
+    Log.d("readingtextsizer", "updateTextSize: activity finder - ${fragment.activity}")
     when (val parentActivity = fragment.activity) {
       is OptionsActivity -> parentActivity.optionActivityPresenter.updateReadingTextSize(textSize)
       is ReadingTextSizeActivity ->

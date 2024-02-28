@@ -1,5 +1,6 @@
 package org.oppia.android.app.topic.conceptcard
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,6 +92,8 @@ class ConceptCardFragmentPresenter @Inject constructor(
           supportsConceptCards = true
         )
     }
+
+    Log.d("creatingconceptcard", "handleCreateView: Creating concept card")
 
     return binding.root
   }

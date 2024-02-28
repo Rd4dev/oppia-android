@@ -1,6 +1,7 @@
 package org.oppia.android.app.player.exploration
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,16 +72,24 @@ class ExplorationFragmentPresenter @Inject constructor(
   /** Handles the [Fragment.onViewCreated] portion of [ExplorationFragment]'s lifecycle. */
   fun handleViewCreated() {
     val profileDataProvider = profileManagementController.getProfile(retrieveArguments().profileId)
+    val profileDataProvider2 = profileManagementController.getProfile(retrieveArguments().profileId)
     profileDataProvider.toLiveData().observe(
       fragment
     ) { result ->
       val readingTextSize = retrieveArguments().readingTextSize
+      Log.d("readingprofiledata", "handleCreateView: Profile data provider 2 - $profileDataProvider")
+      Log.d("readingprofiledata", "handleCreateView: Profile data provider 2 2 - $profileDataProvider2")
+      Log.d("readingprofiledata", "handleCreateView: Reading profile data provider 2 - $profileManagementController")
+      Log.d("readingprofiledata", "handleCreateView: Reading text size in profile data provider 2 - $readingTextSize")
+
+
       if (result is AsyncResult.Success) {
         if (result.value.readingTextSize != readingTextSize) {
 
           // Since text views are based on sp for sizing, the activity needs to be recreated so that
           // sp can be correctly recomputed.
           selectNewReadingTextSize(result.value.readingTextSize)
+          Log.d("callingrecreate", "Calling recreate in exp - $result")
           fragment.requireActivity().recreate()
         } else showSpotlights(result.value.numberOfLogins)
       }

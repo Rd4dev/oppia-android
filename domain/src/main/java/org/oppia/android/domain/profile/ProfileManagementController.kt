@@ -6,6 +6,7 @@ import android.graphics.Matrix
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Deferred
 import org.oppia.android.app.model.AudioLanguage
@@ -583,6 +584,7 @@ class ProfileManagementController @Inject constructor(
       )
       Pair(profileDatabaseBuilder.build(), ProfileActionStatus.SUCCESS)
     }
+    Log.d("readingtextsizer", "updateReadingTextSize: Reading Text Updated - $readingTextSize")
     return dataProviders.createInMemoryDataProviderAsync(UPDATE_READING_TEXT_SIZE_PROVIDER_ID) {
       return@createInMemoryDataProviderAsync getDeferredResult(profileId, null, deferred)
     }

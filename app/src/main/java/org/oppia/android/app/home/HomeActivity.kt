@@ -23,6 +23,7 @@ import org.oppia.android.util.logging.CurrentAppScreenNameIntentDecorator.decora
 import javax.inject.Inject
 
 /** The central activity for all users entering the app. */
+// HomeActivity
 class HomeActivity :
   InjectableAutoLocalizedAppCompatActivity(),
   RouteToTopicListener,

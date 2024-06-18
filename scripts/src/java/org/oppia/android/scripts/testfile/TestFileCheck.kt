@@ -1,9 +1,7 @@
 package org.oppia.android.scripts.testfile
 
-import com.google.protobuf.TextFormat
 import org.oppia.android.scripts.common.RepositoryFile
 import org.oppia.android.scripts.proto.TestFileExemptions
-import org.oppia.android.scripts.proto.TestFileExemptions.TestFileExemption
 import java.io.File
 import java.io.FileInputStream
 
@@ -26,7 +24,7 @@ fun main(vararg args: String) {
   val testFileExemptiontextProto = "scripts/assets/test_file_exemptions"
 
   // A list of all the files to be exempted for this check.
-  // TODO (#3436): Develop a mechanism for permanently exempting files which do not ever need tests.
+  // TODO(#3436): Develop a mechanism for permanently exempting files which do not ever need tests.
   val testFileExemptionList = loadTestFileExemptionsProto(testFileExemptiontextProto)
     .testFileExemptionList
     .map { it.exemptedFilePath }
@@ -99,7 +97,7 @@ private fun logFailures(matchedFiles: List<File>) {
  */
 private fun loadTestFileExemptionsProto(testFileExemptiontextProto: String): TestFileExemptions {
   val protoBinaryFile = File("$testFileExemptiontextProto.pb")
-  val builder = TestFileExemptions.newBuilder()
+  val builder = TestFileExemptions.getDefaultInstance().newBuilderForType()
 
   // This cast is type-safe since proto guarantees type consistency from mergeFrom(),
   // and this method is bounded by the generic type T.
@@ -107,6 +105,6 @@ private fun loadTestFileExemptionsProto(testFileExemptiontextProto: String): Tes
   val protoObj: TestFileExemptions =
     FileInputStream(protoBinaryFile).use {
       builder.mergeFrom(it)
-    }.build()
+    }.build() as TestFileExemptions
   return protoObj
 }

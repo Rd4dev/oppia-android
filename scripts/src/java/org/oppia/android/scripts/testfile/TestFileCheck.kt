@@ -11,43 +11,19 @@ import java.io.FileInputStream
  * Script for ensuring that all production files have test files present.
  *
  * Usage:
- *   bazel run //scripts:test_file_check -- <path_to_directory_root> [regenerate]
+ *   bazel run //scripts:test_file_check -- <path_to_directory_root>
  *
  * Arguments:
  * - path_to_directory_root: directory path to the root of the Oppia Android repository.
- * - regenerate: optional 'regenerate' string to regenerate the exemptions textproto file and print it to the command output.
  *
  * Example:
  *   bazel run //scripts:test_file_check -- $(pwd)
- *   bazel run //scripts:test_file_check -- $(pwd) regenerate
  */
 fun main(vararg args: String) {
   // Path of the repo to be analyzed.
   val repoPath = "${args[0]}/"
 
-  val regenerateFile = args.getOrNull(1) == "regenerate"
   val testFileExemptiontextProto = "scripts/assets/test_file_exemptions"
-
-  if (regenerateFile) {
-    val testFileExemptionList = loadTestFileExemptionsProto(testFileExemptiontextProto)
-      .testFileExemptionList
-
-    val newExemptions = testFileExemptionList.map { exemption ->
-      TestFileExemption.newBuilder().apply {
-        exemptedFilePath = exemption.exemptedFilePath
-        testFileNotRequired = true // Example: setting exemption type
-      }.build()
-    }
-
-    val newExemptionsProto = TestFileExemptions.newBuilder().apply {
-      addAllTestFileExemption(newExemptions)
-    }.build()
-
-    println("Regenerated exemptions:")
-    println()
-    println(TextFormat.printer().printToString(newExemptionsProto))
-    return
-  }
 
   // A list of all the files to be exempted for this check.
   // TODO (#3436): Develop a mechanism for permanently exempting files which do not ever need tests.

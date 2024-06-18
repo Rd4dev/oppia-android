@@ -7,7 +7,7 @@ option java_multiple_files = true;
 
 // Exemptions for the test-file check. Exemptions indicate files for which we should not check for
 // having test files.
-message TestFileExemptions {
+/*message TestFileExemptions {
   // List of all the files which should be exempted for the test-file check. For exempting any
   // file, provide its relative path to root in 'script/assets/test_file_exemptions.textproto'.
   // Also, note that the file paths in the textproto file are maintained in lexicographical order.
@@ -18,6 +18,18 @@ message TestFileExemptions {
   // 'exempted_file_path: "app/src/main/java/org/oppia/android/app/activity/ActivityComponent.kt"'
   // at the correct lexicographical position in the textproto file.
   repeated string exempted_file_path = 1;
+}*/
+
+message TestFileExemptions {
+  repeated TestFileExemption test_file_exemption = 1;
+
+  message TestFileExemption {
+    string exempted_file_path = 1;
+    oneof exemption_type {
+      bool test_file_not_required = 2;
+      int32 override_min_coverage_percent_required = 3;
+    }
+  }
 }
 
 // Exemptions for the accessibility label check. Exemptions indicate Activities for which we should

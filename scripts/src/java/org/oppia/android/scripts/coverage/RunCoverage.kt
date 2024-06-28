@@ -37,6 +37,7 @@ fun main(vararg args: String) {
   val reportFormat = when {
     format.equals("HTML", ignoreCase = true) -> ReportFormat.HTML
     format.equals("MARKDOWN", ignoreCase = true) || format == null -> ReportFormat.MARKDOWN
+    format.startsWith("processTimeout=") -> ReportFormat.MARKDOWN
     else -> throw IllegalArgumentException("Unsupported report format: $format")
   }
 

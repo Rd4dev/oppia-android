@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coverage Report</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 8px;
+        margin-left: 20px;
+        text-align: left;
+        border-bottom: 1px solid #fdfdfd;
+    }
+    .line-number-col {
+        width: 2%;
+    }
+    .line-number-row {
+        border-right: 1px dashed #000000
+    }
+    .source-code-col {
+        width: 98%;
+    }
+    .covered-line, .not-covered-line, .uncovered-line {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        border-radius: 4px;
+        padding: 2px 8px 2px 4px;
+        display: inline-block;
+    }
+    .covered-line {
+        background-color: #c8e6c9; /* Light green */
+    }
+    .not-covered-line {
+        background-color: #ffcdd2; /* Light red */
+    }
+    .uncovered-line {
+        background-color: #f1f1f1; /* light gray */
+    }
+    .coverage-summary {
+      margin-bottom: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+    .summary-box {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .summary-left {
+      text-align: left;
+    }
+    .summary-right {
+      text-align: right;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+    }
+    .legend-item {
+      width: 20px;
+      height: 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .legend .covered {
+      background-color: #c8e6c9; /* Light green */
+    }
+    .legend .not-covered {
+      margin-left: 4px;
+      background-color: #ffcdd2; /* Light red */
+    }
+    @media screen and (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        table {
+            width: auto;
+        }
+    }
+  </style>
+</head>
+<body>
+  <h2>Coverage Report</h2>
+  <div class="summary-box">
+    <div class="summary-left">
+      <strong>Covered File:</strong> utility/src/main/java/org/oppia/android/util/locale/testing/TestOppiaBidiFormatter.kt <br>
+      <div class="legend">
+        <div class="legend-item covered"></div>
+        <span>Covered</span>
+        <div class="legend-item not-covered"></div>
+        <span>Uncovered</span>
+      </div>
+    </div>
+    <div class="summary-right">
+      <div><strong>Coverage percentage:</strong> 82.61%</div>
+      <div><strong>Line coverage:</strong> 19 / 23 covered</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="line-number-col">Line No</th>
+        <th class="source-code-col">Source Code</th>
+      </tr>
+    </thead>
+    <tbody><tr>
+    <td class="line-number-row">   1</td>
+    <td class="uncovered-line">package org.oppia.android.util.locale.testing</td>
+</tr><tr>
+    <td class="line-number-row">   2</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">   3</td>
+    <td class="uncovered-line">import org.oppia.android.util.locale.OppiaBidiFormatter</td>
+</tr><tr>
+    <td class="line-number-row">   4</td>
+    <td class="uncovered-line">import org.oppia.android.util.locale.OppiaBidiFormatterImpl</td>
+</tr><tr>
+    <td class="line-number-row">   5</td>
+    <td class="uncovered-line">import org.oppia.android.util.locale.testing.TestOppiaBidiFormatter.Checker</td>
+</tr><tr>
+    <td class="line-number-row">   6</td>
+    <td class="uncovered-line">import java.util.Locale</td>
+</tr><tr>
+    <td class="line-number-row">   7</td>
+    <td class="uncovered-line">import javax.inject.Inject</td>
+</tr><tr>
+    <td class="line-number-row">   8</td>
+    <td class="uncovered-line">import javax.inject.Singleton</td>
+</tr><tr>
+    <td class="line-number-row">   9</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  10</td>
+    <td class="uncovered-line">/**</td>
+</tr><tr>
+    <td class="line-number-row">  11</td>
+    <td class="uncovered-line"> * Test-only implementation of [OppiaBidiFormatter] for verifying calls to the formatter.</td>
+</tr><tr>
+    <td class="line-number-row">  12</td>
+    <td class="uncovered-line"> *</td>
+</tr><tr>
+    <td class="line-number-row">  13</td>
+    <td class="uncovered-line"> * See [Checker.isTextWrapped] for details on how to validate string wrapping. Further, note that</td>
+</tr><tr>
+    <td class="line-number-row">  14</td>
+    <td class="uncovered-line"> * this formatter delegates to the production formatter to ensure that wrapping still happens, and</td>
+</tr><tr>
+    <td class="line-number-row">  15</td>
+    <td class="uncovered-line"> * it will validate that strings are not wrapped multiple times.</td>
+</tr><tr>
+    <td class="line-number-row">  16</td>
+    <td class="uncovered-line"> *</td>
+</tr><tr>
+    <td class="line-number-row">  17</td>
+    <td class="uncovered-line"> * Implementations of this class are available by injecting [OppiaBidiFormatter.Factory] at the test</td>
+</tr><tr>
+    <td class="line-number-row">  18</td>
+    <td class="uncovered-line"> * scope & constructing a new formatter.</td>
+</tr><tr>
+    <td class="line-number-row">  19</td>
+    <td class="uncovered-line"> */</td>
+</tr><tr>
+    <td class="line-number-row">  20</td>
+    <td class="covered-line">class TestOppiaBidiFormatter private constructor(</td>
+</tr><tr>
+    <td class="line-number-row">  21</td>
+    <td class="covered-line">  private val prodFormatter: OppiaBidiFormatter,</td>
+</tr><tr>
+    <td class="line-number-row">  22</td>
+    <td class="covered-line">  private val checker: Checker</td>
+</tr><tr>
+    <td class="line-number-row">  23</td>
+    <td class="uncovered-line">) : OppiaBidiFormatter {</td>
+</tr><tr>
+    <td class="line-number-row">  24</td>
+    <td class="uncovered-line">  override fun wrapText(unicode: CharSequence): CharSequence {</td>
+</tr><tr>
+    <td class="line-number-row">  25</td>
+    <td class="covered-line">    check(unicode !is WrappedStringMarker) {</td>
+</tr><tr>
+    <td class="line-number-row">  26</td>
+    <td class="covered-line">      "Error: encountered string that's already been wrapped: $unicode"</td>
+</tr><tr>
+    <td class="line-number-row">  27</td>
+    <td class="uncovered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row">  28</td>
+    <td class="covered-line">    checker.wrappedTexts += unicode</td>
+</tr><tr>
+    <td class="line-number-row">  29</td>
+    <td class="covered-line">    return WrappedStringMarker(prodFormatter.wrapText(unicode))</td>
+</tr><tr>
+    <td class="line-number-row">  30</td>
+    <td class="uncovered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  31</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  32</td>
+    <td class="uncovered-line">  /** Implementation of [OppiaBidiFormatter.Factory] for test formatters. */</td>
+</tr><tr>
+    <td class="line-number-row">  33</td>
+    <td class="covered-line">  class FactoryImpl @Inject constructor(</td>
+</tr><tr>
+    <td class="line-number-row">  34</td>
+    <td class="covered-line">    private val prodFactoryImpl: OppiaBidiFormatterImpl.FactoryImpl,</td>
+</tr><tr>
+    <td class="line-number-row">  35</td>
+    <td class="covered-line">    private val checker: Checker</td>
+</tr><tr>
+    <td class="line-number-row">  36</td>
+    <td class="uncovered-line">  ) : OppiaBidiFormatter.Factory {</td>
+</tr><tr>
+    <td class="line-number-row">  37</td>
+    <td class="uncovered-line">    override fun createFormatter(locale: Locale): OppiaBidiFormatter =</td>
+</tr><tr>
+    <td class="line-number-row">  38</td>
+    <td class="covered-line">      TestOppiaBidiFormatter(prodFactoryImpl.createFormatter(locale), checker)</td>
+</tr><tr>
+    <td class="line-number-row">  39</td>
+    <td class="uncovered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  40</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  41</td>
+    <td class="uncovered-line">  /**</td>
+</tr><tr>
+    <td class="line-number-row">  42</td>
+    <td class="uncovered-line">   * Checker utility for determining whether a [CharSequence] has been wrapped for bidirectional</td>
+</tr><tr>
+    <td class="line-number-row">  43</td>
+    <td class="uncovered-line">   * formatting.</td>
+</tr><tr>
+    <td class="line-number-row">  44</td>
+    <td class="uncovered-line">   *</td>
+</tr><tr>
+    <td class="line-number-row">  45</td>
+    <td class="uncovered-line">   * This class can be injected at the test application scope & be used for any strings wrapped by</td>
+</tr><tr>
+    <td class="line-number-row">  46</td>
+    <td class="uncovered-line">   * any [TestOppiaBidiFormatter]s.</td>
+</tr><tr>
+    <td class="line-number-row">  47</td>
+    <td class="uncovered-line">   */</td>
+</tr><tr>
+    <td class="line-number-row">  48</td>
+    <td class="covered-line">  @Singleton</td>
+</tr><tr>
+    <td class="line-number-row">  49</td>
+    <td class="covered-line">  class Checker @Inject constructor() {</td>
+</tr><tr>
+    <td class="line-number-row">  50</td>
+    <td class="uncovered-line">    /** The list of texts wrapped using [wrapText] across all formatters. */</td>
+</tr><tr>
+    <td class="line-number-row">  51</td>
+    <td class="covered-line">    internal val wrappedTexts = mutableListOf<CharSequence>()</td>
+</tr><tr>
+    <td class="line-number-row">  52</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  53</td>
+    <td class="uncovered-line">    /**</td>
+</tr><tr>
+    <td class="line-number-row">  54</td>
+    <td class="uncovered-line">     * Returns whether the specified unicode sequence has been wrapped for formatting by this class</td>
+</tr><tr>
+    <td class="line-number-row">  55</td>
+    <td class="uncovered-line">     * (i.e. by a call to [wrapText]).</td>
+</tr><tr>
+    <td class="line-number-row">  56</td>
+    <td class="uncovered-line">     *</td>
+</tr><tr>
+    <td class="line-number-row">  57</td>
+    <td class="uncovered-line">     * Note that [wrapText] will ensure that already wrapped sequences are not wrapped again.</td>
+</tr><tr>
+    <td class="line-number-row">  58</td>
+    <td class="uncovered-line">     * Further, certain operations will break this check (particularly, conversion to a string or</td>
+</tr><tr>
+    <td class="line-number-row">  59</td>
+    <td class="uncovered-line">     * anything that returns a different char scequence from the original).</td>
+</tr><tr>
+    <td class="line-number-row">  60</td>
+    <td class="uncovered-line">     *</td>
+</tr><tr>
+    <td class="line-number-row">  61</td>
+    <td class="uncovered-line">     * Finally, this method will not return true for a string formatted by the original production</td>
+</tr><tr>
+    <td class="line-number-row">  62</td>
+    <td class="uncovered-line">     * implementation or Android's bidirectional formatter directly. This is only meant to be used</td>
+</tr><tr>
+    <td class="line-number-row">  63</td>
+    <td class="uncovered-line">     * on char sequences returned recently from a call to [wrapText].</td>
+</tr><tr>
+    <td class="line-number-row">  64</td>
+    <td class="uncovered-line">     */</td>
+</tr><tr>
+    <td class="line-number-row">  65</td>
+    <td class="covered-line">    fun isTextWrapped(unicode: CharSequence): Boolean = unicode is WrappedStringMarker</td>
+</tr><tr>
+    <td class="line-number-row">  66</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  67</td>
+    <td class="uncovered-line">    /**</td>
+</tr><tr>
+    <td class="line-number-row">  68</td>
+    <td class="uncovered-line">     * Returns the list of all sequences wrapped using [wrapText] across all formatters. Care should</td>
+</tr><tr>
+    <td class="line-number-row">  69</td>
+    <td class="uncovered-line">     * be taken if multiple formatters are used in succession since this list does not necessarily</td>
+</tr><tr>
+    <td class="line-number-row">  70</td>
+    <td class="uncovered-line">     * guarantee order.</td>
+</tr><tr>
+    <td class="line-number-row">  71</td>
+    <td class="uncovered-line">     */</td>
+</tr><tr>
+    <td class="line-number-row">  72</td>
+    <td class="not-covered-line">    fun getAllWrappedUnicodeTexts(): List<CharSequence> = wrappedTexts</td>
+</tr><tr>
+    <td class="line-number-row">  73</td>
+    <td class="uncovered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  74</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  75</td>
+    <td class="covered-line">  private class WrappedStringMarker(private val wrappedSeq: CharSequence) : CharSequence {</td>
+</tr><tr>
+    <td class="line-number-row">  76</td>
+    <td class="covered-line">    override val length: Int = wrappedSeq.length</td>
+</tr><tr>
+    <td class="line-number-row">  77</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  78</td>
+    <td class="not-covered-line">    override fun get(index: Int): Char = wrappedSeq[index]</td>
+</tr><tr>
+    <td class="line-number-row">  79</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  80</td>
+    <td class="uncovered-line">    override fun subSequence(startIndex: Int, endIndex: Int): CharSequence =</td>
+</tr><tr>
+    <td class="line-number-row">  81</td>
+    <td class="not-covered-line">      wrappedSeq.subSequence(startIndex, endIndex)</td>
+</tr><tr>
+    <td class="line-number-row">  82</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  83</td>
+    <td class="covered-line">    override fun toString(): String = wrappedSeq.toString()</td>
+</tr><tr>
+    <td class="line-number-row">  84</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  85</td>
+    <td class="not-covered-line">    override fun hashCode(): Int = wrappedSeq.hashCode()</td>
+</tr><tr>
+    <td class="line-number-row">  86</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  87</td>
+    <td class="covered-line">    override fun equals(other: Any?): Boolean = toString() == other</td>
+</tr><tr>
+    <td class="line-number-row">  88</td>
+    <td class="uncovered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  89</td>
+    <td class="uncovered-line">}</td>
+</tr>    </tbody>
+  </table>
+</body>
+</html>

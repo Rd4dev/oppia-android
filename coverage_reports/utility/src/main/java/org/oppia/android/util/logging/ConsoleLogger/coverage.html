@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coverage Report</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        line-height: 1.6;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 8px;
+        margin-left: 20px;
+        text-align: left;
+        white-space: pre-wrap;
+        border-bottom: 1px solid #e3e3e3;
+    }
+    .line-number-col {
+        width: 4%;
+    }
+    .line-number-row {
+        border-right: 1px solid #ababab
+    }
+    .source-code-col {
+        width: 96%;
+    }
+    .covered-line, .not-covered-line, .uncovered-line {
+        /*white-space: pre-wrap;*/
+    }
+    .covered-line {
+        background-color: #c8e6c9; /* Light green */
+    }
+    .not-covered-line {
+        background-color: #ffcdd2; /* Light red */
+    }
+    .uncovered-line {
+        background-color: #f7f7f7; /* light gray */
+    }
+    .coverage-summary {
+      margin-bottom: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+    .summary-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .summary-left {
+      text-align: left;
+    }
+    .summary-right {
+      text-align: right;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+    }
+    .legend-item {
+      width: 20px;
+      height: 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .legend .covered {
+      background-color: #c8e6c9; /* Light green */
+    }
+    .legend .not-covered {
+      margin-left: 4px;
+      background-color: #ffcdd2; /* Light red */
+    }
+    @media screen and (max-width: 768px) {
+      body {
+          padding: 10px;
+      }
+      table {
+          width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Coverage Report</h2>
+  <div class="summary-box">
+    <div class="summary-left">
+      <strong>Covered File:</strong> utility/src/main/java/org/oppia/android/util/logging/ConsoleLogger.kt <br>
+      <div class="legend">
+        <div class="legend-item covered"></div>
+        <span>Covered</span>
+        <div class="legend-item not-covered"></div>
+        <span>Uncovered</span>
+      </div>
+    </div>
+    <div class="summary-right">
+      <div><strong>Coverage percentage:</strong> 54.55%</div>
+      <div><strong>Line coverage:</strong> 30 / 55 covered</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="line-number-col">Line No</th>
+        <th class="source-code-col">Source Code</th>
+      </tr>
+    </thead>
+    <tbody><tr>
+    <td class="line-number-row">   1</td>
+    <td class="uncovered-line">package org.oppia.android.util.logging</td>
+</tr><tr>
+    <td class="line-number-row">   2</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">   3</td>
+    <td class="uncovered-line">import android.content.Context</td>
+</tr><tr>
+    <td class="line-number-row">   4</td>
+    <td class="uncovered-line">import android.util.Log</td>
+</tr><tr>
+    <td class="line-number-row">   5</td>
+    <td class="uncovered-line">import kotlinx.coroutines.CoroutineDispatcher</td>
+</tr><tr>
+    <td class="line-number-row">   6</td>
+    <td class="uncovered-line">import kotlinx.coroutines.CoroutineScope</td>
+</tr><tr>
+    <td class="line-number-row">   7</td>
+    <td class="uncovered-line">import kotlinx.coroutines.flow.MutableSharedFlow</td>
+</tr><tr>
+    <td class="line-number-row">   8</td>
+    <td class="uncovered-line">import kotlinx.coroutines.flow.SharedFlow</td>
+</tr><tr>
+    <td class="line-number-row">   9</td>
+    <td class="uncovered-line">import kotlinx.coroutines.launch</td>
+</tr><tr>
+    <td class="line-number-row">  10</td>
+    <td class="uncovered-line">import org.oppia.android.app.model.EventLog.ConsoleLoggerContext</td>
+</tr><tr>
+    <td class="line-number-row">  11</td>
+    <td class="uncovered-line">import org.oppia.android.util.locale.OppiaLocale</td>
+</tr><tr>
+    <td class="line-number-row">  12</td>
+    <td class="uncovered-line">import org.oppia.android.util.threading.BlockingDispatcher</td>
+</tr><tr>
+    <td class="line-number-row">  13</td>
+    <td class="uncovered-line">import java.io.File</td>
+</tr><tr>
+    <td class="line-number-row">  14</td>
+    <td class="uncovered-line">import javax.inject.Inject</td>
+</tr><tr>
+    <td class="line-number-row">  15</td>
+    <td class="uncovered-line">import javax.inject.Singleton</td>
+</tr><tr>
+    <td class="line-number-row">  16</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  17</td>
+    <td class="uncovered-line">/** Wrapper class for Android logcat and file logging. All logs in the app should use this class. */</td>
+</tr><tr>
+    <td class="line-number-row">  18</td>
+    <td class="covered-line">@Singleton</td>
+</tr><tr>
+    <td class="line-number-row">  19</td>
+    <td class="covered-line">class ConsoleLogger @Inject constructor(</td>
+</tr><tr>
+    <td class="line-number-row">  20</td>
+    <td class="uncovered-line">  context: Context,</td>
+</tr><tr>
+    <td class="line-number-row">  21</td>
+    <td class="covered-line">  @BlockingDispatcher private val blockingDispatcher: CoroutineDispatcher,</td>
+</tr><tr>
+    <td class="line-number-row">  22</td>
+    <td class="covered-line">  @EnableConsoleLog private val enableConsoleLog: Boolean,</td>
+</tr><tr>
+    <td class="line-number-row">  23</td>
+    <td class="covered-line">  @EnableFileLog private val enableFileLog: Boolean,</td>
+</tr><tr>
+    <td class="line-number-row">  24</td>
+    <td class="covered-line">  @GlobalLogLevel private val globalLogLevel: LogLevel,</td>
+</tr><tr>
+    <td class="line-number-row">  25</td>
+    <td class="covered-line">  private val machineLocale: OppiaLocale.MachineLocale</td>
+</tr><tr>
+    <td class="line-number-row">  26</td>
+    <td class="uncovered-line">) {</td>
+</tr><tr>
+    <td class="line-number-row">  27</td>
+    <td class="covered-line">  private val blockingScope = CoroutineScope(blockingDispatcher)</td>
+</tr><tr>
+    <td class="line-number-row">  28</td>
+    <td class="covered-line">  private val logDirectory = File(context.filesDir, "oppia_app.log")</td>
+</tr><tr>
+    <td class="line-number-row">  29</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  30</td>
+    <td class="covered-line">  private val _logErrorMessagesFlow = MutableSharedFlow<ConsoleLoggerContext>()</td>
+</tr><tr>
+    <td class="line-number-row">  31</td>
+    <td class="uncovered-line">  /**</td>
+</tr><tr>
+    <td class="line-number-row">  32</td>
+    <td class="uncovered-line">   * A flow that emits a [ConsoleLoggerContext] when a error message is logged.</td>
+</tr><tr>
+    <td class="line-number-row">  33</td>
+    <td class="uncovered-line">   */</td>
+</tr><tr>
+    <td class="line-number-row">  34</td>
+    <td class="covered-line">  val logErrorMessagesFlow: SharedFlow<ConsoleLoggerContext> = _logErrorMessagesFlow</td>
+</tr><tr>
+    <td class="line-number-row">  35</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  36</td>
+    <td class="uncovered-line">  /** Logs a verbose message with the specified tag. */</td>
+</tr><tr>
+    <td class="line-number-row">  37</td>
+    <td class="uncovered-line">  fun v(tag: String, msg: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  38</td>
+    <td class="not-covered-line">    writeLog(LogLevel.VERBOSE, tag, msg)</td>
+</tr><tr>
+    <td class="line-number-row">  39</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  40</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  41</td>
+    <td class="uncovered-line">  /** Logs a verbose message with the specified tag, message and exception. */</td>
+</tr><tr>
+    <td class="line-number-row">  42</td>
+    <td class="uncovered-line">  fun v(tag: String, msg: String, tr: Throwable) {</td>
+</tr><tr>
+    <td class="line-number-row">  43</td>
+    <td class="not-covered-line">    writeError(LogLevel.VERBOSE, tag, msg, tr)</td>
+</tr><tr>
+    <td class="line-number-row">  44</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  45</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  46</td>
+    <td class="uncovered-line">  /** Logs a debug message with the specified tag. */</td>
+</tr><tr>
+    <td class="line-number-row">  47</td>
+    <td class="uncovered-line">  fun d(tag: String, msg: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  48</td>
+    <td class="not-covered-line">    writeLog(LogLevel.DEBUG, tag, msg)</td>
+</tr><tr>
+    <td class="line-number-row">  49</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  50</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  51</td>
+    <td class="uncovered-line">  /** Logs a debug message with the specified tag, message and exception. */</td>
+</tr><tr>
+    <td class="line-number-row">  52</td>
+    <td class="uncovered-line">  fun d(tag: String, msg: String, tr: Throwable) {</td>
+</tr><tr>
+    <td class="line-number-row">  53</td>
+    <td class="not-covered-line">    writeError(LogLevel.DEBUG, tag, msg, tr)</td>
+</tr><tr>
+    <td class="line-number-row">  54</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  55</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  56</td>
+    <td class="uncovered-line">  /** Logs a info message with the specified tag. */</td>
+</tr><tr>
+    <td class="line-number-row">  57</td>
+    <td class="uncovered-line">  fun i(tag: String, msg: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  58</td>
+    <td class="not-covered-line">    writeLog(LogLevel.INFO, tag, msg)</td>
+</tr><tr>
+    <td class="line-number-row">  59</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  60</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  61</td>
+    <td class="uncovered-line">  /** Logs a info message with the specified tag, message and exception. */</td>
+</tr><tr>
+    <td class="line-number-row">  62</td>
+    <td class="uncovered-line">  fun i(tag: String, msg: String, tr: Throwable) {</td>
+</tr><tr>
+    <td class="line-number-row">  63</td>
+    <td class="not-covered-line">    writeError(LogLevel.INFO, tag, msg, tr)</td>
+</tr><tr>
+    <td class="line-number-row">  64</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  65</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  66</td>
+    <td class="uncovered-line">  /** Logs a warn message with the specified tag. */</td>
+</tr><tr>
+    <td class="line-number-row">  67</td>
+    <td class="uncovered-line">  fun w(tag: String, msg: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  68</td>
+    <td class="not-covered-line">    writeLog(LogLevel.WARNING, tag, msg)</td>
+</tr><tr>
+    <td class="line-number-row">  69</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  70</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  71</td>
+    <td class="uncovered-line">  /** Logs a warn message with the specified tag, message and exception. */</td>
+</tr><tr>
+    <td class="line-number-row">  72</td>
+    <td class="uncovered-line">  fun w(tag: String, msg: String, tr: Throwable) {</td>
+</tr><tr>
+    <td class="line-number-row">  73</td>
+    <td class="not-covered-line">    writeError(LogLevel.WARNING, tag, msg, tr)</td>
+</tr><tr>
+    <td class="line-number-row">  74</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  75</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  76</td>
+    <td class="uncovered-line">  /** Logs a error message with the specified tag. */</td>
+</tr><tr>
+    <td class="line-number-row">  77</td>
+    <td class="uncovered-line">  fun e(tag: String, msg: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  78</td>
+    <td class="covered-line">    writeLog(LogLevel.ERROR, tag, msg)</td>
+</tr><tr>
+    <td class="line-number-row">  79</td>
+    <td class="covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  80</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  81</td>
+    <td class="uncovered-line">  /** Logs a error message with the specified tag, message and exception. */</td>
+</tr><tr>
+    <td class="line-number-row">  82</td>
+    <td class="uncovered-line">  fun e(tag: String, msg: String, tr: Throwable?) {</td>
+</tr><tr>
+    <td class="line-number-row">  83</td>
+    <td class="not-covered-line">    writeError(LogLevel.ERROR, tag, msg, tr)</td>
+</tr><tr>
+    <td class="line-number-row">  84</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  85</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  86</td>
+    <td class="uncovered-line">  private fun isLogEnable(logLevel: LogLevel): Boolean {</td>
+</tr><tr>
+    <td class="line-number-row">  87</td>
+    <td class="covered-line">    return globalLogLevel.logLevel <= logLevel.logLevel</td>
+</tr><tr>
+    <td class="line-number-row">  88</td>
+    <td class="uncovered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  89</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  90</td>
+    <td class="uncovered-line">  private fun writeLog(logLevel: LogLevel, tag: String, log: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  91</td>
+    <td class="covered-line">    writeInternal(logLevel, tag, log)</td>
+</tr><tr>
+    <td class="line-number-row">  92</td>
+    <td class="covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  93</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  94</td>
+    <td class="uncovered-line">  private fun writeError(logLevel: LogLevel, tag: String, log: String, tr: Throwable?) {</td>
+</tr><tr>
+    <td class="line-number-row">  95</td>
+    <td class="not-covered-line">    writeInternal(logLevel, tag, "$log\n${Log.getStackTraceString(tr)}")</td>
+</tr><tr>
+    <td class="line-number-row">  96</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  97</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  98</td>
+    <td class="uncovered-line">  private fun writeInternal(logLevel: LogLevel, tag: String, fullLog: String) {</td>
+</tr><tr>
+    <td class="line-number-row">  99</td>
+    <td class="covered-line">    if (!isLogEnable(logLevel)) {</td>
+</tr><tr>
+    <td class="line-number-row"> 100</td>
+    <td class="not-covered-line">      return</td>
+</tr><tr>
+    <td class="line-number-row"> 101</td>
+    <td class="uncovered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row"> 102</td>
+    <td class="covered-line">    if (enableConsoleLog) {</td>
+</tr><tr>
+    <td class="line-number-row"> 103</td>
+    <td class="covered-line">      Log.println(logLevel.logLevel, tag, fullLog)</td>
+</tr><tr>
+    <td class="line-number-row"> 104</td>
+    <td class="uncovered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row"> 105</td>
+    <td class="covered-line">    if (enableFileLog) {</td>
+</tr><tr>
+    <td class="line-number-row"> 106</td>
+    <td class="not-covered-line">      logToFileInBackground(</td>
+</tr><tr>
+    <td class="line-number-row"> 107</td>
+    <td class="not-covered-line">        "${machineLocale.computeCurrentTimeString()}\t${logLevel.name}/$tag: $fullLog"</td>
+</tr><tr>
+    <td class="line-number-row"> 108</td>
+    <td class="uncovered-line">      )</td>
+</tr><tr>
+    <td class="line-number-row"> 109</td>
+    <td class="uncovered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row"> 110</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row"> 111</td>
+    <td class="uncovered-line">    // Add the log to the error message flow so it can be logged to firebase.</td>
+</tr><tr>
+    <td class="line-number-row"> 112</td>
+    <td class="covered-line">    CoroutineScope(blockingDispatcher).launch {</td>
+</tr><tr>
+    <td class="line-number-row"> 113</td>
+    <td class="uncovered-line">      // Only log error messages to firebase.</td>
+</tr><tr>
+    <td class="line-number-row"> 114</td>
+    <td class="covered-line">      if (logLevel == LogLevel.ERROR) {</td>
+</tr><tr>
+    <td class="line-number-row"> 115</td>
+    <td class="covered-line">        _logErrorMessagesFlow.emit(</td>
+</tr><tr>
+    <td class="line-number-row"> 116</td>
+    <td class="covered-line">          ConsoleLoggerContext.newBuilder()</td>
+</tr><tr>
+    <td class="line-number-row"> 117</td>
+    <td class="covered-line">            .setLogLevel(logLevel.toString())</td>
+</tr><tr>
+    <td class="line-number-row"> 118</td>
+    <td class="covered-line">            .setLogTag(tag)</td>
+</tr><tr>
+    <td class="line-number-row"> 119</td>
+    <td class="covered-line">            .setFullErrorLog(fullLog)</td>
+</tr><tr>
+    <td class="line-number-row"> 120</td>
+    <td class="covered-line">            .build()</td>
+</tr><tr>
+    <td class="line-number-row"> 121</td>
+    <td class="uncovered-line">        )</td>
+</tr><tr>
+    <td class="line-number-row"> 122</td>
+    <td class="uncovered-line">      }</td>
+</tr><tr>
+    <td class="line-number-row"> 123</td>
+    <td class="covered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row"> 124</td>
+    <td class="covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row"> 125</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row"> 126</td>
+    <td class="uncovered-line">  /**</td>
+</tr><tr>
+    <td class="line-number-row"> 127</td>
+    <td class="uncovered-line">   * Writes the specified text line to file in a background thread to ensure that saving messages don't block the main</td>
+</tr><tr>
+    <td class="line-number-row"> 128</td>
+    <td class="uncovered-line">   * thread. A blocking dispatcher is used to ensure messages are written in order.</td>
+</tr><tr>
+    <td class="line-number-row"> 129</td>
+    <td class="uncovered-line">   */</td>
+</tr><tr>
+    <td class="line-number-row"> 130</td>
+    <td class="uncovered-line">  private fun logToFileInBackground(text: String) {</td>
+</tr><tr>
+    <td class="line-number-row"> 131</td>
+    <td class="not-covered-line">    blockingScope.launch { logDirectory.printWriter().use { out -> out.println(text) } }</td>
+</tr><tr>
+    <td class="line-number-row"> 132</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row"> 133</td>
+    <td class="uncovered-line">}</td>
+</tr>    </tbody>
+  </table>
+</body>
+</html>

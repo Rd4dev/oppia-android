@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coverage Report</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 8px;
+        margin-left: 20px;
+        text-align: left;
+        border-bottom: 1px solid #fdfdfd;
+    }
+    .line-number-col {
+        width: 2%;
+    }
+    .line-number-row {
+        border-right: 1px dashed #000000
+    }
+    .source-code-col {
+        width: 98%;
+    }
+    .covered-line, .not-covered-line, .uncovered-line {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        border-radius: 4px;
+        padding: 2px 8px 2px 4px;
+        display: inline-block;
+    }
+    .covered-line {
+        background-color: #c8e6c9; /* Light green */
+    }
+    .not-covered-line {
+        background-color: #ffcdd2; /* Light red */
+    }
+    .uncovered-line {
+        background-color: #f1f1f1; /* light gray */
+    }
+    .coverage-summary {
+      margin-bottom: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+    .summary-box {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .summary-left {
+      text-align: left;
+    }
+    .summary-right {
+      text-align: right;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+    }
+    .legend-item {
+      width: 20px;
+      height: 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .legend .covered {
+      background-color: #c8e6c9; /* Light green */
+    }
+    .legend .not-covered {
+      margin-left: 4px;
+      background-color: #ffcdd2; /* Light red */
+    }
+    @media screen and (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        table {
+            width: auto;
+        }
+    }
+  </style>
+</head>
+<body>
+  <h2>Coverage Report</h2>
+  <div class="summary-box">
+    <div class="summary-left">
+      <strong>Covered File:</strong> domain/src/main/java/org/oppia/android/domain/auth/FirebaseAuthWrapperImpl.kt <br>
+      <div class="legend">
+        <div class="legend-item covered"></div>
+        <span>Covered</span>
+        <div class="legend-item not-covered"></div>
+        <span>Uncovered</span>
+      </div>
+    </div>
+    <div class="summary-right">
+      <div><strong>Coverage percentage:</strong> 31.25%</div>
+      <div><strong>Line coverage:</strong> 5 / 16 covered</div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="line-number-col">Line No</th>
+        <th class="source-code-col">Source Code</th>
+      </tr>
+    </thead>
+    <tbody><tr>
+    <td class="line-number-row">   1</td>
+    <td class="uncovered-line">package org.oppia.android.domain.auth</td>
+</tr><tr>
+    <td class="line-number-row">   2</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">   3</td>
+    <td class="uncovered-line">import javax.inject.Inject</td>
+</tr><tr>
+    <td class="line-number-row">   4</td>
+    <td class="uncovered-line">import javax.inject.Singleton</td>
+</tr><tr>
+    <td class="line-number-row">   5</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">   6</td>
+    <td class="uncovered-line">/** Production implementation of FirebaseAuthWrapper. */</td>
+</tr><tr>
+    <td class="line-number-row">   7</td>
+    <td class="covered-line">@Singleton</td>
+</tr><tr>
+    <td class="line-number-row">   8</td>
+    <td class="covered-line">class FirebaseAuthWrapperImpl @Inject constructor(</td>
+</tr><tr>
+    <td class="line-number-row">   9</td>
+    <td class="covered-line">  private val firebaseWrapper: FirebaseAuthInstanceWrapper</td>
+</tr><tr>
+    <td class="line-number-row">  10</td>
+    <td class="uncovered-line">) : FirebaseAuthWrapper {</td>
+</tr><tr>
+    <td class="line-number-row">  11</td>
+    <td class="uncovered-line">  override val currentUser: FirebaseUserWrapper?</td>
+</tr><tr>
+    <td class="line-number-row">  12</td>
+    <td class="covered-line">    get() = firebaseWrapper.firebaseAuthInstance?.firebaseAuth?.currentUser?.let {</td>
+</tr><tr>
+    <td class="line-number-row">  13</td>
+    <td class="not-covered-line">      FirebaseUserWrapper(it.uid)</td>
+</tr><tr>
+    <td class="line-number-row">  14</td>
+    <td class="covered-line">    }</td>
+</tr><tr>
+    <td class="line-number-row">  15</td>
+    <td class="uncovered-line"></td>
+</tr><tr>
+    <td class="line-number-row">  16</td>
+    <td class="uncovered-line">  override fun signInAnonymously(onSuccess: () -> Unit, onFailure: (Throwable) -> Unit) {</td>
+</tr><tr>
+    <td class="line-number-row">  17</td>
+    <td class="not-covered-line">    firebaseWrapper.firebaseAuthInstance?.firebaseAuth?.signInAnonymously()</td>
+</tr><tr>
+    <td class="line-number-row">  18</td>
+    <td class="not-covered-line">      ?.addOnSuccessListener {</td>
+</tr><tr>
+    <td class="line-number-row">  19</td>
+    <td class="not-covered-line">        onSuccess.invoke()</td>
+</tr><tr>
+    <td class="line-number-row">  20</td>
+    <td class="not-covered-line">      }</td>
+</tr><tr>
+    <td class="line-number-row">  21</td>
+    <td class="not-covered-line">      ?.addOnFailureListener { task -></td>
+</tr><tr>
+    <td class="line-number-row">  22</td>
+    <td class="not-covered-line">        val exception = task.cause</td>
+</tr><tr>
+    <td class="line-number-row">  23</td>
+    <td class="not-covered-line">        if (exception != null) {</td>
+</tr><tr>
+    <td class="line-number-row">  24</td>
+    <td class="not-covered-line">          onFailure.invoke(exception)</td>
+</tr><tr>
+    <td class="line-number-row">  25</td>
+    <td class="uncovered-line">        }</td>
+</tr><tr>
+    <td class="line-number-row">  26</td>
+    <td class="not-covered-line">      }</td>
+</tr><tr>
+    <td class="line-number-row">  27</td>
+    <td class="not-covered-line">  }</td>
+</tr><tr>
+    <td class="line-number-row">  28</td>
+    <td class="uncovered-line">}</td>
+</tr>    </tbody>
+  </table>
+</body>
+</html>

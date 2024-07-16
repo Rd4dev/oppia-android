@@ -9,6 +9,7 @@ kt_android_library(
     srcs = [
         "ImageClickInputIsInRegionRuleClassifierProvider.kt",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//domain/src/main/java/org/oppia/android/domain/classify:classification_context",
         "//domain/src/main/java/org/oppia/android/domain/classify:rule_classifier",

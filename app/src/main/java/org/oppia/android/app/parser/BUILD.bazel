@@ -1,0 +1,101 @@
+"""
+Constructs for setting up parser.
+"""
+
+load("@io_bazel_rules_kotlin//kotlin:android.bzl", "kt_android_library")
+
+genrule(
+    name = "update_FractionParsingUiError",
+    srcs = ["FractionParsingUiError.kt"],
+    outs = ["FractionParsingUiError_updated.kt"],
+    cmd = """
+    cat $(SRCS) |
+    sed 's/import org.oppia.android.R/import org.oppia.android.app.R/g' |
+    sed 's/import org.oppia.android.databinding./import org.oppia.android.app.databinding.databinding./g' > $(OUTS)
+    """,
+    visibility = ["//app:app_visibility"],
+)
+
+genrule(
+    name = "update_StringToNumberParser",
+    srcs = ["StringToNumberParser.kt"],
+    outs = ["StringToNumberParser_updated.kt"],
+    cmd = """
+    cat $(SRCS) |
+    sed 's/import org.oppia.android.R/import org.oppia.android.app.R/g' |
+    sed 's/import org.oppia.android.databinding./import org.oppia.android.app.databinding.databinding./g' > $(OUTS)
+    """,
+    visibility = ["//app:app_visibility"],
+)
+
+genrule(
+    name = "update_StringToRatioParser",
+    srcs = ["StringToRatioParser.kt"],
+    outs = ["StringToRatioParser_updated.kt"],
+    cmd = """
+    cat $(SRCS) |
+    sed 's/import org.oppia.android.R/import org.oppia.android.app.R/g' |
+    sed 's/import org.oppia.android.databinding./import org.oppia.android.app.databinding.databinding./g' > $(OUTS)
+    """,
+    visibility = ["//app:app_visibility"],
+)
+
+kt_android_library(
+    name = "FractionParsingUiError_util",
+    srcs = [
+        "FractionParsingUiError_updated.kt",
+    ],
+    visibility = ["//app:app_visibility"],
+    deps = [
+        "//app:resources",
+        "//app/src/main/java/org/oppia/android/app/translation:app_language_resource_handler",
+        "//third_party:javax_inject_javax_inject",
+        "//utility/src/main/java/org/oppia/android/util/math:fraction_parser",
+        "//utility/src/main/java/org/oppia/android/util/locale:oppia_locale",
+        "//utility/src/main/java/org/oppia/android/util/system:oppia_clock",
+    ],
+)
+
+kt_android_library(
+    name = "StringToNumberParser_util",
+    srcs = [
+        "StringToNumberParser_updated.kt",
+    ],
+    visibility = ["//app:app_visibility"],
+    deps = [
+        "//app:resources",
+        "//app/src/main/java/org/oppia/android/app/translation:app_language_resource_handler",
+        "//third_party:javax_inject_javax_inject",
+        "//utility/src/main/java/org/oppia/android/util/math:fraction_parser",
+        "//utility/src/main/java/org/oppia/android/util/locale:oppia_locale",
+        "//utility/src/main/java/org/oppia/android/util/system:oppia_clock",
+    ],
+)
+
+kt_android_library(
+    name = "StringToRatioParser_util",
+    srcs = [
+        "StringToRatioParser_updated.kt",
+    ],
+    visibility = ["//app:app_visibility"],
+    deps = [
+        "//app:resources",
+        "//app/src/main/java/org/oppia/android/app/translation:app_language_resource_handler",
+        "//third_party:javax_inject_javax_inject",
+        "//utility/src/main/java/org/oppia/android/util/math:fraction_parser",
+        "//utility/src/main/java/org/oppia/android/util/locale:oppia_locale",
+        "//utility/src/main/java/org/oppia/android/util/system:oppia_clock",
+    ],
+)
+
+#kt_android_library(
+#    name = "spotlight",
+#    srcs = [
+#        "SpotlightManager.kt",
+#        "SpotlightNavigationListener.kt",
+#        "SpotlightShape.kt",
+#        "SpotlightTarget.kt",
+#    ],
+#    visibility = ["//app:app_visibility"],
+#    deps = ["//model/src/main/proto:spotlight_java_proto_lite"],
+#)

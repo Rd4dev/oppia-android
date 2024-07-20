@@ -136,6 +136,8 @@ class ComputeAffectedTests(
     val affectedTestBuckets = bucketTargets(filteredTestTargets)
     val encodedTestBucketEntries =
       affectedTestBuckets.associateBy { it.toCompressedBase64() }.entries.shuffled()
+    println("Triggering a file change")
+    println("Encoded Test Bucket Entries: $encodedTestBucketEntries")
     File(pathToOutputFile).printWriter().use { writer ->
       encodedTestBucketEntries.forEachIndexed { index, (encoded, bucket) ->
         writer.println("${bucket.cacheBucketName}-shard$index;$encoded")

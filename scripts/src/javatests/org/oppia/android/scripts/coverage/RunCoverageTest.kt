@@ -8,6 +8,8 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.oppia.android.scripts.common.CommandExecutorImpl
 import org.oppia.android.scripts.common.ScriptBackgroundCoroutineDispatcher
+import org.oppia.android.scripts.proto.TestFileExemptions
+import org.oppia.android.scripts.proto.TestFileExemptions.TestFileExemption
 import org.oppia.android.scripts.testing.TestBazelWorkspace
 import org.oppia.android.testing.assertThrows
 import java.io.ByteArrayOutputStream
@@ -32,12 +34,14 @@ class RunCoverageTest {
 
   private lateinit var sourceContent: String
   private lateinit var testContent: String
+  private lateinit var testExemptions: String
 
   @Before
   fun setUp() {
     coverageDir = "/coverage_reports"
     markdownOutputPath = "${tempFolder.root}/coverage_reports/report.md"
     htmlOutputPath = "${tempFolder.root}/coverage_reports/report.html"
+    testExemptions = createTestFileExemptionTextProto()
     testBazelWorkspace = TestBazelWorkspace(tempFolder)
 
     sourceContent =
@@ -197,7 +201,7 @@ class RunCoverageTest {
   @Test
   fun testRunCoverage_testFileExempted_noCoverage() {
     System.setOut(PrintStream(outContent))
-    val exemptedFilePath = "app/src/main/java/org/oppia/android/app/activity/ActivityComponent.kt"
+    val exemptedFilePath = "TestExempted.kt"
 
     RunCoverage(
       "${tempFolder.root}",
@@ -205,13 +209,89 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     assertThat(outContent.toString().trim()).isEqualTo(
       "This file is exempted from having a test file; skipping coverage check."
     )
   }
+
+  @Test
+  fun testRunCoverage_sourceFileIncompatibleWithCodeCoverage_exemptedFromCoverageAnalysis() {
+    System.setOut(PrintStream(outContent))
+    val incompatibleFilePath = "SourceIncompatibleWithCoverage.kt"
+
+    RunCoverage(
+      "${tempFolder.root}",
+      incompatibleFilePath,
+      ReportFormat.MARKDOWN,
+      markdownOutputPath,
+      longCommandExecutor,
+      scriptBgDispatcher,
+      testExemptions
+    ).execute()
+
+    // The assertion statemnt is subject to updation of the the log statement.
+    assertThat(outContent.toString().trim()).isEqualTo(
+      "This file is exempted from having a test file; skipping coverage check."
+    )
+  }
+
+// The following code is how we can test the same scenario in the upcoming prs with
+// introduction to specific Failure, `Exempted` and Details type and
+// enabling list of files analysis
+// To make sure the incompatible source code is not considered for the coverage run,
+// we can check for the exemption of source file in the final markdown report
+/*  @Test
+  fun testRunCoverage_incompatibleSourceFileCoverageRun_generatesMarkdown() {
+    val filePathList =
+      listOf(
+        "coverage/main/java/com/example/AddNums.kt",
+        "SourceIncompatibleWithCoverage.kt"
+      )
+
+    testBazelWorkspace.initEmptyWorkspace()
+    testBazelWorkspace.addSourceAndTestFileWithContent(
+      filename = "AddNums",
+      testFilename = "AddNumsTest",
+      sourceContent = sourceContent,
+      testContent = testContent,
+      sourceSubpackage = "coverage/main/java/com/example",
+      testSubpackage = "coverage/test/java/com/example"
+    )
+
+    val exception = assertThrows<IllegalStateException>() {
+      RunCoverage(
+        "${tempFolder.root}",
+        filePathList,
+        ReportFormat.MARKDOWN,
+        markdownOutputPath,
+        longCommandExecutor,
+        scriptBgDispatcher,
+        testExemptions
+      ).execute()
+    }
+
+    assertThat(exception).hasMessageThat()
+      .contains("Coverage Analysis$BOLD$RED FAILED$RESET")
+
+    val failureMessage =
+      "Source File Incompatible To Perform Code Coverage Analysis"
+
+    val expectedResult = buildString {
+      append("## Coverage Report\n\n")
+      append("### Results\n")
+      ...(other reports)
+      append("### Files Exempted from Coverage\n")
+      append(
+        "- [${exemptedFilePathList.get(0).substringAfterLast("/")}]" +
+          "($oppiaDevelopGitHubLink/${exemptedFilePathList.get(0)})"
+      )
+    }
+    assertThat(readFinalMdReport()).isEqualTo(expectedMarkdown)
+  }*/
 
   @Test
   fun testRunCoverage_sampleTestsDefaultFormat_returnsCoverageData() {
@@ -262,7 +342,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -291,7 +372,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -320,7 +402,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -367,7 +450,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -396,7 +480,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -458,7 +543,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -529,7 +615,8 @@ class RunCoverageTest {
       ReportFormat.MARKDOWN,
       markdownOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(markdownOutputPath).readText()
@@ -565,7 +652,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -594,7 +682,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -623,7 +712,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -670,7 +760,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -699,7 +790,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -761,7 +853,8 @@ class RunCoverageTest {
       ReportFormat.HTML,
       htmlOutputPath,
       longCommandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testExemptions
     ).execute()
 
     val outputReportText = File(htmlOutputPath).readText()
@@ -1131,5 +1224,27 @@ class RunCoverageTest {
     return CommandExecutorImpl(
       scriptBgDispatcher, processTimeout = 5, processTimeoutUnit = TimeUnit.MINUTES
     )
+  }
+
+  private fun createTestFileExemptionTextProto(): String {
+    val testFileExemptions = TestFileExemptions.newBuilder()
+      .addTestFileExemption(
+        TestFileExemption.newBuilder()
+          .setExemptedFilePath("TestExempted.kt")
+          .setTestFileNotRequired(true)
+      )
+      .addTestFileExemption(
+        TestFileExemption.newBuilder()
+          .setExemptedFilePath("SourceIncompatibleWithCoverage.kt")
+          .setSourceFileIsIncompatibleWithCodeCoverage(true)
+      )
+      .build()
+
+    val testExemptionPb = "test_exemption.pb"
+    val coverageTestExemptiontextProto = tempFolder.newFile(testExemptionPb)
+    coverageTestExemptiontextProto.outputStream().use {
+      (testFileExemptions.writeTo(it))
+    }
+    return "${tempFolder.root}/${testExemptionPb.removeSuffix(".pb")}"
   }
 }

@@ -51,6 +51,8 @@ fun main(vararg args: String) {
     "File doesn't exist: $filePath."
   }
 
+  val testFileExemptionTextProto = "scripts/assets/test_file_exemptions"
+
   ScriptBackgroundCoroutineDispatcher().use { scriptBgDispatcher ->
     val processTimeout: Long = args.find { it.startsWith("processTimeout=") }
       ?.substringAfter("=")
@@ -66,7 +68,8 @@ fun main(vararg args: String) {
       reportFormat,
       reportOutputPath,
       commandExecutor,
-      scriptBgDispatcher
+      scriptBgDispatcher,
+      testFileExemptionTextProto
     ).execute()
   }
 }
@@ -85,12 +88,17 @@ class RunCoverage(
   private val reportFormat: ReportFormat,
   private val reportOutputPath: String,
   private val commandExecutor: CommandExecutor,
-  private val scriptBgDispatcher: ScriptBackgroundCoroutineDispatcher
+  private val scriptBgDispatcher: ScriptBackgroundCoroutineDispatcher,
+  private val testFileExemptionTextProto: String
 ) {
   private val bazelClient by lazy { BazelClient(File(repoRoot), commandExecutor) }
 
   private val rootDirectory = File(repoRoot).absoluteFile
-  private val testFileExemptionTextProto = "scripts/assets/test_file_exemptions"
+
+  private val testFileExemptionList = loadTestFileExemptionsProto(testFileExemptionTextProto)
+    .testFileExemptionList
+    .filter { it.testFileNotRequired || it.sourceFileIsIncompatibleWithCodeCoverage }
+    .map { it.exemptedFilePath }
 
   /**
    * Executes coverage analysis for the specified file.
@@ -104,11 +112,6 @@ class RunCoverage(
    *     the file is exempted from having a test file, an empty list is returned
    */
   fun execute() {
-    val testFileExemptionList = loadTestFileExemptionsProto(testFileExemptionTextProto)
-      .testFileExemptionList
-      .filter { it.testFileNotRequired || it.sourceFileIsIncompatibleWithCodeCoverage }
-      .map { it.exemptedFilePath }
-
     if (filePath in testFileExemptionList) {
       println("This file is exempted from having a test file; skipping coverage check.")
     } else {

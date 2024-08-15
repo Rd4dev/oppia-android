@@ -3,10 +3,9 @@
 name: Code Coverage
 
 # Controls when the action will run. Triggers the workflow on pull request
-# events or push events in the develop branch
+# events or push events in the develop branch.
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
+  pull_request:
   push:
     branches:
       # Push events on develop branch
@@ -115,7 +114,7 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 10
-#      matrix: ${{ fromJson(needs.compute_changed_files.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.compute_changed_files.outputs.matrix) }}
     env:
       CACHE_DIRECTORY: ~/.bazel_cache
     steps:
@@ -248,7 +247,7 @@ jobs:
           CHANGED_FILES: ${{ env.CHANGED_FILES }}
         run: |
           echo "CHANGED FILES: $CHANGED_FILES"
-          bazel run //scripts:run_coverage -- $(pwd) utility/src/main/java/org/oppia/android/util/parser/math/MathModel.kt --format=PROTO --processTimeout=15
+          bazel run //scripts:run_coverage -- $(pwd) $CHANGED_FILES --format=PROTO --processTimeout=15
 
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v4
@@ -269,7 +268,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: coverage-report-artifact
-          pattern: coverage-report-*
+          pattern: coverage-report
           merge-multiple: true
 
       - name: Filter Coverage Reports

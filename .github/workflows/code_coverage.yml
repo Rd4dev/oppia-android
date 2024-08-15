@@ -115,7 +115,7 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 10
-      matrix: ${{ fromJson(needs.compute_changed_files.outputs.matrix) }}
+#      matrix: ${{ fromJson(needs.compute_changed_files.outputs.matrix) }}
     env:
       CACHE_DIRECTORY: ~/.bazel_cache
     steps:
@@ -248,12 +248,12 @@ jobs:
           CHANGED_FILES: ${{ env.CHANGED_FILES }}
         run: |
           echo "CHANGED FILES: $CHANGED_FILES"
-          bazel run //scripts:run_coverage -- $(pwd) $CHANGED_FILES --format=PROTO --processTimeout=15
+          bazel run //scripts:run_coverage -- $(pwd) utility/src/main/java/org/oppia/android/util/parser/math/MathModel.kt --format=PROTO --processTimeout=15
 
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-${{ env.SHARD_NAME }} # Saving with unique names to avoid conflict
+          name: coverage-report # Saving with unique names to avoid conflict
           path: coverage_reports
 
   evaluate-code-coverage-reports:

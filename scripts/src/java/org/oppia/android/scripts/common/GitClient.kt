@@ -53,8 +53,7 @@ class GitClient(
     retrieveChangedCommittedFiles() +
       retrieveChangedStagedFiles() +
       retrieveChangedUnstagedFiles() +
-      retrieveChangedUntrackedFiles() +
-      retrieveRenamedFiles()
+      retrieveChangedUntrackedFiles()
 
   private fun retrieveChangedCommittedFiles(): List<String> {
     return executeGitCommand("diff --name-only ${computeCommitRange()}")

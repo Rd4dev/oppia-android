@@ -59,9 +59,13 @@ class TestFileCheck(
     // A list of all the prod files that do not have a corresponding test file.
     val matchedFiles = prodFilesList.filter { prodFile ->
       !testFilesList.any { testFile ->
-        testFile.name == computeExpectedTestFileName(prodFile)
+        testFile.toRelativeString(File(repoPath)) == computeExpectedTestFileName(prodFile, repoPath) ||
+          testFile.toRelativeString(File(repoPath)) == computeExpectedTestFileNameAppShared(prodFile, repoPath) ||
+          testFile.toRelativeString(File(repoPath)) == computeExpectedTestFileNameAppLocal(prodFile, repoPath)
       }
     }
+
+    println("No. of files with no test files: ${matchedFiles.size}")
 
     logFailures(matchedFiles)
 
@@ -80,8 +84,35 @@ class TestFileCheck(
   }
 }
 
-private fun computeExpectedTestFileName(prodFile: File): String {
-  return "${prodFile.nameWithoutExtension}Test.kt"
+private fun computeExpectedTestFileName(prodFile: File, repoPath: String): String {
+  val filePath = prodFile.toRelativeString(File(repoPath))
+  val expectedfilepath = when {
+    filePath.startsWith("scripts/") -> {
+      filePath.replace("java", "javatests").removeSuffix(".kt")
+    }
+    else -> {
+      filePath.replace("/main/", "/test/").removeSuffix(".kt")
+    }
+  }
+  return "${expectedfilepath}Test.kt"
+}
+
+private fun computeExpectedTestFileNameAppShared(prodFile: File, repoPath: String): String {
+  val filePath = prodFile.toRelativeString(File(repoPath))
+  if(filePath.startsWith("app/")) {
+    val expectedfilepath = filePath.replace("/main/", "/sharedTest/").removeSuffix(".kt")
+    return "${expectedfilepath}Test.kt"
+  }
+  return ""
+}
+
+private fun computeExpectedTestFileNameAppLocal(prodFile: File, repoPath: String): String {
+  val filePath = prodFile.toRelativeString(File(repoPath))
+  if(filePath.startsWith("app/")) {
+    val expectedfilepath = filePath.replace("/main/", "/test/").removeSuffix(".kt")
+    return "${expectedfilepath}LocalTest.kt"
+  }
+  return ""
 }
 
 private fun logFailures(matchedFiles: List<File>) {

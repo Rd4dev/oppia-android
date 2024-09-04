@@ -164,8 +164,6 @@ jobs:
           if [ $exit_code -eq 0 ]; then
             echo "No binary files found"
             echo "BINARY FILES CHECK PASSED"
-          else
-            echo "BINARY FILES CHECK FAILED"
           fi
 
       - name: Regex Patterns Validation Check

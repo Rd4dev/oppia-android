@@ -158,7 +158,6 @@ jobs:
 
       - name: Binary files check
         run: |
-          git fetch --all
           bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
 
       - name: Regex Patterns Validation Check

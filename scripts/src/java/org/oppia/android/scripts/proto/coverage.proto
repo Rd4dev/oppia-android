@@ -44,7 +44,7 @@ message CoverageFailure {
   string file_path = 1;
   // The test target for which the coverage generation failed.
   string bazel_test_target = 2;
-  // The reason for why the coverage analysis failed.
+  // The reason for why the coverage analysis failed
   string failure_message = 3;
 }
 

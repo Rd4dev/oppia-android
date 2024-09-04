@@ -3,7 +3,7 @@
 # Pre-commit hook to check for binary files.
 
 # Find the common ancestor between develop and the current branch
-base_commit=$(git merge-base develop HEAD)
+base_commit=$(git merge-base 'origin/develop' HEAD)
 
 # Get the list of staged changes (files ready to be committed)
 staged_files=$(git diff --cached --name-only)

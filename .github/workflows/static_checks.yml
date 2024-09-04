@@ -207,6 +207,7 @@ jobs:
 
       - name: Binary files check
         run: |
+          git fetch --all
           bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
 
   # Note that caching is intentionally not enabled for this check since licenses should always be

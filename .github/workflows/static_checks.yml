@@ -159,6 +159,13 @@ jobs:
       - name: Binary files check
         run: |
           bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
+          exit_code=$?
+
+          if [ $exit_code -eq 0 ]; then
+            echo "BINARY FILES CHECK PASSED"
+          else
+            echo "BINARY FILES CHECK FAILED"
+          fi
 
       - name: Regex Patterns Validation Check
         # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,

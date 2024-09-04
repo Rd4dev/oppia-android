@@ -13,7 +13,6 @@ changed_files=$(git diff --name-only "$base_commit" HEAD)
 
 # Combine both lists of files, ensuring no duplicates
 all_files=$(echo -e "$staged_files\n$changed_files" | sort -u)
-echo "$all_files"
 
 function checkForBinaries() {
   binaryFilesCount=0
@@ -27,7 +26,7 @@ function checkForBinaries() {
   done
 
   if [[ -n "${binaryFiles}" && "${binaryFilesCount}" -gt 0 ]]; then
-    printf "\nPlease remove the following binary files:\n\n"
+    printf "\nPlease remove the following binary file(s):\n\n"
     printf "\033[33m%b\033[0m\n" "$binaryFiles"
     exit 1
   fi

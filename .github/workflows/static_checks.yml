@@ -107,6 +107,8 @@ jobs:
       CACHE_DIRECTORY: ~/.bazel_cache
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Bazel
         uses: abhinavsingh/setup-bazel@v3

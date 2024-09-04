@@ -100,10 +100,6 @@ jobs:
         run: |
           bash /home/runner/work/oppia-android/oppia-android/scripts/buildifier_lint_check.sh $HOME
 
-      - name: Binary files check
-        run: |
-          bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
-
   script_checks:
     name: Script Checks
     runs-on: ubuntu-20.04
@@ -208,6 +204,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           bazel run //scripts:string_resource_validation_check -- $(pwd)
+
+      - name: Binary files check
+        run: |
+          bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
 
   # Note that caching is intentionally not enabled for this check since licenses should always be
   # verified without any potential influence from earlier builds (i.e. always from a clean build to

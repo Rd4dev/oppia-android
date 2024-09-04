@@ -16,22 +16,24 @@ all_files=$(echo -e "$staged_files\n$changed_files" | sort -u)
 echo "$all_files"
 
 function checkForBinaries() {
-    binaryFilesCount=0
+  binaryFilesCount=0
 
-    # Iterate over all files (both staged and changed)
-    for file in $all_files; do
-        if [ -f "$file" ] && file --mime "$file" | grep -q 'binary'; then
-            binaryFiles+="${file}\n"
-            ((binaryFilesCount++))
-        fi
-    done
-
-    if [[ -n "${binaryFiles}" && "${binaryFilesCount}" -gt 0 ]]; then
-        printf "\nFound the following binary files:\n\n"
-        printf "\033[33m%b\033[0m\n" "$binaryFiles"
-        printf "Please remove the binary files.\n"
-        exit 1
+  # Iterate over all files (both staged and changed)
+  for file in $all_files; do
+    if [ -f "$file" ] && file --mime "$file" | grep -q 'binary'; then
+      binaryFiles+="${file}\n"
+      ((binaryFilesCount++))
     fi
+  done
+
+  if [[ -n "${binaryFiles}" && "${binaryFilesCount}" -gt 0 ]]; then
+    printf "\nPlease remove the following binary files:\n\n"
+    printf "\033[33m%b\033[0m\n" "$binaryFiles"
+    printf "BINARY FILES CHECK FAILED\n"
+    exit 1
+  else
+    printf "BINARY FILES CHECK PASSED"
+  fi
 }
 
 checkForBinaries

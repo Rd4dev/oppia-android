@@ -20,22 +20,15 @@ function checkForBinaries() {
   # Iterate over all files (both staged and changed)
   for file in $all_files; do
     if [ -f "$file" ] && file --mime "$file" | grep -q 'binary'; then
-      binaryFiles+="${file}\n"
       ((binaryFilesCount++))
-      printf "\033[33m%s\033[0m\n" "$file"
+      printf "\n\033[33m%s\033[0m" "$file"
     fi
   done
 
-  if [[ -n "${binaryFiles}" && "${binaryFilesCount}" -gt 0 ]]; then
-    printf "\nPlease remove the binary file(s):\n\n"
-    while IFS= read -r line; do
-      printf "\033[33m%b\033[0m\n" "$line"
-      printf ""
-    done <<< "$binaryFiles"
-    printf "\nBINARY FILES CHECK FAILED\n"
+  if [[ "${binaryFilesCount}" -gt 0 ]]; then
+    printf "\n\nPlease remove the %d detected binary file(s)." "$binaryFilesCount"
+    printf "\nBINARY FILES CHECK FAILED"
     exit 1
-  else
-    printf "\nBINARY FILES CHECK PASSED\n"
   fi
 }
 

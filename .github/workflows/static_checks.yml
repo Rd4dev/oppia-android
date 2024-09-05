@@ -208,6 +208,9 @@ jobs:
           bazel run //scripts:string_resource_validation_check -- $(pwd)
 
       - name: Binary files check
+        # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
+        # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
+        if: ${{ !cancelled() }}
         run: |
           bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
           echo "No binary files found"

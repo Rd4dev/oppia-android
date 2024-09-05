@@ -27,7 +27,7 @@ function checkForBinaries() {
 
   if [[ -n "${binaryFiles}" && "${binaryFilesCount}" -gt 0 ]]; then
     printf "\nPlease remove the following binary file(s):\n\n"
-    printf "\033[33m%b\033[0m\n" "$binaryFiles"
+    printf "\033[33m%b\033[0m\n" "$(echo -e "$binaryFiles")"
     printf "BINARY FILES CHECK FAILED\n"
     exit 1
   fi

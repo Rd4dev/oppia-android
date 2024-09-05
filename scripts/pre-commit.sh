@@ -22,6 +22,7 @@ function checkForBinaries() {
     if [ -f "$file" ] && file --mime "$file" | grep -q 'binary'; then
       binaryFiles+="${file}\n"
       ((binaryFilesCount++))
+      printf "\033[33m%s\033[0m\n" "$file"
     fi
   done
 

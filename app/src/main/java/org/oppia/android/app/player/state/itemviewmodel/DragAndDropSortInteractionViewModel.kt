@@ -57,7 +57,7 @@ class DragAndDropSortInteractionViewModel private constructor(
   private val translationController: TranslationController,
   userAnswerState: UserAnswerState,
   fragment: Fragment,
-  private val explorationProgressController: ExplorationProgressController
+  explorationProgressController: ExplorationProgressController
 ) : StateItemViewModel(ViewType.DRAG_DROP_SORT_INTERACTION),
   InteractionAnswerHandler,
   OnItemDragListener,

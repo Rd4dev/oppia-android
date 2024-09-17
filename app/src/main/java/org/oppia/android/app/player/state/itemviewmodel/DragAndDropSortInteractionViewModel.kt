@@ -1,6 +1,5 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
@@ -85,7 +84,14 @@ class DragAndDropSortInteractionViewModel private constructor(
   private var answerErrorCetegory: AnswerErrorCategory = AnswerErrorCategory.NO_ERROR
 
   private val _originalChoiceItems: MutableList<DragDropInteractionContentViewModel> =
-    computeOriginalChoiceItems(contentIdHtmlMap, choiceSubtitledHtmls, this, resourceHandler, fragment, explorationProgressController)
+    computeOriginalChoiceItems(
+      contentIdHtmlMap,
+      choiceSubtitledHtmls,
+      this,
+      resourceHandler,
+      fragment,
+      explorationProgressController
+    )
 
   private val _choiceItems = computeSelectedChoiceItems(
     contentIdHtmlMap,
@@ -320,8 +326,7 @@ class DragAndDropSortInteractionViewModel private constructor(
       explorationProgressController: ExplorationProgressController
     ): MutableList<DragDropInteractionContentViewModel> {
 
-      var vm : DragDropInteractionContentViewModel
-
+      var vm: DragDropInteractionContentViewModel
       var updatedContentIdMap: Map<String?, String?> = mapOf()
 
       val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
@@ -330,7 +335,7 @@ class DragAndDropSortInteractionViewModel private constructor(
 
       var choiceItems: MutableList<DragDropInteractionContentViewModel> = mutableListOf()
 
-      fun processEphemeralStateResult(result: AsyncResult<EphemeralState>){
+      fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
         choiceItems = when (result) {
           is AsyncResult.Failure -> mutableListOf()
           is AsyncResult.Pending -> mutableListOf()
@@ -357,7 +362,13 @@ class DragAndDropSortInteractionViewModel private constructor(
                 ?.htmlList
                 ?.firstOrNull()
 
-              updatedContentIdMap = updatedContentIdMap.plus(Pair(contentIdFromWrongAnswer, contentHtmlFromWrongAnswer))
+              updatedContentIdMap = updatedContentIdMap
+                .plus(
+                  Pair(
+                    contentIdFromWrongAnswer,
+                    contentHtmlFromWrongAnswer
+                  )
+                )
 
               vm = DragDropInteractionContentViewModel(
                 contentIdHtmlMap = (updatedContentIdMap) as Map<String, String>,

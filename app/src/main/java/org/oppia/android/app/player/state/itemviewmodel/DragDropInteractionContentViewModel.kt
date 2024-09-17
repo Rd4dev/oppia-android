@@ -26,7 +26,7 @@ class DragDropInteractionContentViewModel(
   private val explorationProgressController: ExplorationProgressController?
 ) : ObservableViewModel() {
 
-/*  private val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>>? by lazy {
+  /*private val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>>? by lazy {
     explorationProgressController?.getCurrentState()?.toLiveData()
   }
 
@@ -87,11 +87,13 @@ class DragDropInteractionContentViewModel(
   fun computeStringList(): StringList = StringList.newBuilder().apply {
     Log.d("draganddrop", "computeStringList: Computing string list")
     Log.d("draganddrop", "computeStringList: Computing string list html content - $htmlContent")
-    Log.d("draganddrop", "computeStringList: Computing string list html content - $contentIdHtmlMap")
+    // Computing string list html map - {ca_choices_0=hi3, ca_choices_1=bye3, ca_choices_2=chao3, ca_choices_3=tata3}
+    // Displays as 0, 1, 2, 3
+    Log.d("draganddrop", "computeStringList: Computing string list html map - $contentIdHtmlMap")
+    Log.d("draganddrop", "computeStringList: Computing string list html map - ${htmlContent.contentIdsList.mapNotNull { contentIdHtmlMap[it.contentId] }}")
     addAllHtml(htmlContent.contentIdsList.mapNotNull { contentIdHtmlMap[it.contentId] })
     ss()
 //    addAllHtml(htmlContent.contentIdsList.mapNotNull { "Kye${it.contentId}" })
-//    addAllHtml(listOf("key1", "key2", "key3"))
   }.build()
 
   fun computeDragDropMoveUpItemContentDescription(): String {

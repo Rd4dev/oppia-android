@@ -30,6 +30,12 @@ import org.oppia.android.app.recyclerview.OnItemDragListener
 import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.domain.translation.TranslationController
 import javax.inject.Inject
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 import org.oppia.android.app.model.EphemeralState
 import org.oppia.android.domain.exploration.ExplorationProgressController
 import org.oppia.android.util.data.AsyncResult
@@ -91,7 +97,7 @@ class DragAndDropSortInteractionViewModel private constructor(
     return eph
   }*/
 
-  fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
+  /*fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
     when (result) {
       is AsyncResult.Failure -> null
       is AsyncResult.Pending -> {} // Display nothing until a valid result is available.
@@ -111,7 +117,7 @@ class DragAndDropSortInteractionViewModel private constructor(
         }
       }
     }
-  }
+  }*/
 
   /*fun checkHasPreviousState(ephemeralState: EphemeralState): EphemeralState {
 //    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList}")
@@ -163,11 +169,11 @@ class DragAndDropSortInteractionViewModel private constructor(
   init {
     Log.d("callinginit", "Calling init")
 
-    ephemeralStateLiveData2.observe(
+    /*ephemeralStateLiveData2.observe(
       fragment
     ) { result ->
       processEphemeralStateResult(result)
-    }
+    }*/
 
     Log.d("callinginit", "After init")
     val callback: Observable.OnPropertyChangedCallback =
@@ -560,6 +566,9 @@ class DragAndDropSortInteractionViewModel private constructor(
       fragment: Fragment,
       explorationProgressController: ExplorationProgressController
     ): MutableList<DragDropInteractionContentViewModel> {
+
+      var vm : DragDropInteractionContentViewModel
+
       var updatedContentIdMap: Map<String?, String?> = mapOf()
 
       val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
@@ -601,7 +610,8 @@ class DragAndDropSortInteractionViewModel private constructor(
                 ?.htmlList
                 ?.firstOrNull()
 
-              Log.d("contenthtmlfromwrong", "processEphemeralStateResult: Content html - $contentHtmlFromWrongAnswer")
+              Log.d("contenthtmlfromwrong", "processEphemeralStateResult: 2 Content id - $contentIdFromWrongAnswer")
+              Log.d("contenthtmlfromwrong", "processEphemeralStateResult: 2 Content html - $contentHtmlFromWrongAnswer")
 
 //              updatedContentIdMap.plus(Pair(contentIdFromWrongAnswer, contentHtmlFromWrongAnswer))
               updatedContentIdMap = updatedContentIdMap.plus(Pair(contentIdFromWrongAnswer, contentHtmlFromWrongAnswer))
@@ -612,10 +622,11 @@ class DragAndDropSortInteractionViewModel private constructor(
               val contentIdHtmlMap1: Map<String, String> =
               mapOf(Pair("ca_choices_0", "hi1"), Pair("ca_choices_1", "bye1"), Pair("ca_choices_2", "chao1"), Pair("ca_choices_3", "tata1"))
 
-              DragDropInteractionContentViewModel(
+
+              vm = DragDropInteractionContentViewModel(
 //                contentIdHtmlMap = (updatedContentIdMap ?: contentIdHtmlMap) as Map<String, String>,
-//                contentIdHtmlMap = (updatedContentIdMap) as Map<String, String>,
-                contentIdHtmlMap = contentIdHtmlMap1,
+                contentIdHtmlMap = (updatedContentIdMap) as Map<String, String>,
+//                contentIdHtmlMap = contentIdHtmlMap1,
                 htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
                   addContentIds(
                     TranslatableHtmlContentId.newBuilder().apply {
@@ -631,16 +642,63 @@ class DragAndDropSortInteractionViewModel private constructor(
                 null,
                 null
               )
+
+              vm.computeStringList()
+
+              /*DragDropInteractionContentViewModel(
+//                contentIdHtmlMap = (updatedContentIdMap ?: contentIdHtmlMap) as Map<String, String>,
+                contentIdHtmlMap = (updatedContentIdMap) as Map<String, String>,
+//                contentIdHtmlMap = contentIdHtmlMap1,
+                htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+                  addContentIds(
+                    TranslatableHtmlContentId.newBuilder().apply {
+                      contentId = contentIdFromWrongAnswer ?: subtitledHtml.contentId
+                      Log.d("contentid", "computeOriginalChoiceItems: content id is - $contentId")
+                    }
+                  )
+                }.build(),
+                itemIndex = index,
+                listSize = choiceStrings.size,
+                dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+                resourceHandler = resourceHandler,
+                null,
+                null
+              )*/
+              vm
             }.toMutableList()
           }
           else -> mutableListOf()
         }
       }
 
+      val deferredResult = CompletableDeferred<AsyncResult<EphemeralState>>()
+
+      fun observeEphemeralState() {
+        ephemeralStateLiveData.observe(fragment) { result ->
+          deferredResult.complete(result)
+        }
+      }
+
+      suspend fun getEphemeralStateResult(): AsyncResult<EphemeralState> {
+        observeEphemeralState()
+        return deferredResult.await()
+      }
+
+// Usage in a coroutine
+      GlobalScope.launch(Dispatchers.Main) {
+        val result = getEphemeralStateResult()
+        Log.d("contentid", "computeOriginalChoiceItems: in launch - $result")
+
+        // Process the result here
+      }
+
+
+      runBlocking {
       ephemeralStateLiveData.observe(fragment) { result ->
         Log.d("contentid", "computeOriginalChoiceItems: in ephemeral state live data - $choiceItems")
         Log.d("contentid", "computeOriginalChoiceItems: content id map - $contentIdHtmlMap")
-        processEphemeralStateResult(result)
+          processEphemeralStateResult(result)
+        }
         Log.d("contentid", "computeOriginalChoiceItems: in ephemeral state live data 2 - $choiceItems")
       }
 
@@ -654,8 +712,8 @@ class DragAndDropSortInteractionViewModel private constructor(
         mapOf(Pair("ca_choices_0", "hi3"), Pair("ca_choices_1", "bye3"), Pair("ca_choices_2", "chao3"), Pair("ca_choices_3", "tata3"))
         choiceStrings.mapIndexed { index, subtitledHtml ->
           DragDropInteractionContentViewModel(
-//            contentIdHtmlMap = contentIdHtmlMap3,
-            contentIdHtmlMap = (updatedContentIdMap) as Map<String, String> ?: contentIdHtmlMap3,
+            contentIdHtmlMap = contentIdHtmlMap3,
+//            contentIdHtmlMap = (updatedContentIdMap) as Map<String, String> ?: contentIdHtmlMap3,
             htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
               addContentIds(
                 TranslatableHtmlContentId.newBuilder().apply {
@@ -674,115 +732,6 @@ class DragAndDropSortInteractionViewModel private constructor(
       }
     }
   }
-
-
-
-
-
-
-
-
-
-  /*private fun computeOriginalChoiceItems(
-    contentIdHtmlMap: Map<String, String>,
-    choiceStrings: List<SubtitledHtml>,
-    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
-    resourceHandler: AppLanguageResourceHandler,
-    fragment: Fragment,
-    explorationProgressController: ExplorationProgressController
-  ): MutableList<DragDropInteractionContentViewModel> {
-
-    val choiceItemsLiveData = MutableLiveData<List<DragDropInteractionContentViewModel>>()
-
-    val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
-      explorationProgressController.getCurrentState().toLiveData()
-    }
-
-    ephemeralStateLiveData.observe(fragment) { result ->
-      val choiceItems = processEphemeralStateResult(result, contentIdHtmlMap, choiceStrings, dragAndDropSortInteractionViewModel)
-      choiceItemsLiveData.value = choiceItems
-    }
-
-    return choiceItemsLiveData
-  }*/
-
-  /*private fun computeOriginalChoiceItems(
-    contentIdHtmlMap: Map<String, String>,
-    choiceStrings: List<SubtitledHtml>,
-    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
-    resourceHandler: AppLanguageResourceHandler,
-    fragment: Fragment,
-    explorationProgressController: ExplorationProgressController
-  ): MutableList<DragDropInteractionContentViewModel> {
-
-    val choiceItems = mutableListOf<DragDropInteractionContentViewModel>()
-
-    val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
-      explorationProgressController.getCurrentState().toLiveData()
-    }
-
-    ephemeralStateLiveData.observe(fragment) { result ->
-      val processedChoiceItems = processEphemeralStateResult(
-        result, contentIdHtmlMap, choiceStrings, dragAndDropSortInteractionViewModel
-      )
-      choiceItems.addAll(processedChoiceItems)
-    }
-
-    return choiceItems
-  }
-
-
-  private fun processEphemeralStateResult(
-    result: AsyncResult<EphemeralState>,
-    contentIdHtmlMap: Map<String, String>,
-    choiceStrings: List<SubtitledHtml>,
-    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel
-  ): List<DragDropInteractionContentViewModel> {
-    return when (result) {
-      is AsyncResult.Success -> {
-        val state = result.value
-        val wrongAnswerList = state.pendingState.wrongAnswerList
-
-        choiceStrings.mapIndexed { index, subtitledHtml ->
-          val contentIdFromWrongAnswer = wrongAnswerList
-            ?.firstOrNull()
-            ?.userAnswer
-            ?.answer
-            ?.listOfSetsOfTranslatableHtmlContentIds
-            ?.contentIdListsList
-            ?.getOrNull(index)
-            ?.contentIdsList
-            ?.firstOrNull()
-            ?.contentId
-
-          DragDropInteractionContentViewModel(
-            contentIdHtmlMap = contentIdHtmlMap,
-            htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
-              addContentIds(
-                TranslatableHtmlContentId.newBuilder().apply {
-                  contentId = contentIdFromWrongAnswer ?: subtitledHtml.contentId
-                }
-              )
-            }.build(),
-            itemIndex = index,
-            listSize = choiceStrings.size,
-            dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
-            resourceHandler = resourceHandler,
-            null,
-            null
-          )
-        }
-      }
-      else -> emptyList()
-    }
-  }*/
-
-
-
-
-
-
-
 
 
 

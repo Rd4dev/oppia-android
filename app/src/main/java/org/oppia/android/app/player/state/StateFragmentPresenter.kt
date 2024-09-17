@@ -1,6 +1,7 @@
 package org.oppia.android.app.player.state
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -339,8 +340,10 @@ class StateFragmentPresenter @Inject constructor(
 
     stateViewModel.itemList.clear()
     stateViewModel.itemList += dataPair.first
+    Log.d("draganddrop", "processEphemeralState: Item list - ${stateViewModel.itemList}")
     stateViewModel.rightItemList.clear()
     stateViewModel.rightItemList += dataPair.second
+    Log.d("draganddrop", "processEphemeralState: Right item list - ${stateViewModel.rightItemList}")
 
     if (isInNewState) {
       (binding.stateRecyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(

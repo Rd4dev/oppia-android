@@ -1,8 +1,12 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import org.oppia.android.R
 import org.oppia.android.app.model.AnswerErrorCategory
@@ -26,6 +30,10 @@ import org.oppia.android.app.recyclerview.OnItemDragListener
 import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.domain.translation.TranslationController
 import javax.inject.Inject
+import org.oppia.android.app.model.EphemeralState
+import org.oppia.android.domain.exploration.ExplorationProgressController
+import org.oppia.android.util.data.AsyncResult
+import org.oppia.android.util.data.DataProviders.Companion.toLiveData
 
 /** Represents the type of errors that can be thrown by drag and drop sort interaction. */
 enum class DragAndDropSortInteractionError(@StringRes private var error: Int?) {
@@ -49,11 +57,69 @@ class DragAndDropSortInteractionViewModel private constructor(
   private val writtenTranslationContext: WrittenTranslationContext,
   private val resourceHandler: AppLanguageResourceHandler,
   private val translationController: TranslationController,
-  userAnswerState: UserAnswerState
+  userAnswerState: UserAnswerState,
+  fragment: Fragment,
+  private val explorationProgressController: ExplorationProgressController
 ) : StateItemViewModel(ViewType.DRAG_DROP_SORT_INTERACTION),
   InteractionAnswerHandler,
   OnItemDragListener,
   OnDragEndedListener {
+
+  private lateinit var contid: Map<String, String>
+  private lateinit var contidlist: String
+  private lateinit var conhtmllist: String
+
+  private val ephemeralStateLiveData2: LiveData<AsyncResult<EphemeralState>> by lazy {
+    explorationProgressController.getCurrentState().toLiveData()
+  }
+
+  /*var ephState = ephemeralStateLiveData2.observe(
+    fragment
+  ) { result ->
+    processEphemeralStateResult(result)
+  }*/
+
+//  val sub = subscribeToCurrentState()
+
+  /*fun subscribeToCurrentState(): EphemeralState? {
+    var eph: EphemeralState? = null
+    ephemeralStateLiveData2.observe(
+      fragment
+    ) { result ->
+      eph = processEphemeralStateResult(result)
+    }
+    return eph
+  }*/
+
+  fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
+    when (result) {
+      is AsyncResult.Failure -> null
+      is AsyncResult.Pending -> {} // Display nothing until a valid result is available.
+      is AsyncResult.Success -> {
+       //(result.value)
+        val sssize = result.value.pendingState.wrongAnswerList
+          ?.lastOrNull()
+          ?.userAnswer
+          ?.answer
+          ?.listOfSetsOfTranslatableHtmlContentIds
+          ?.contentIdListsList
+          ?.size
+
+        for (i in 0 until sssize!!) {
+          Log.d("callinginitlogging", "processEphemeralStateResult: $i")
+          Log.d("callinginitlogging", "processEphemeralStateResult: $i")
+        }
+      }
+    }
+  }
+
+  /*fun checkHasPreviousState(ephemeralState: EphemeralState): EphemeralState {
+//    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList}")
+    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList}")
+    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[0].contentIdsList[0].contentId}")
+    return ephemeralState
+  }*/
+
   private val allowMultipleItemsInSamePosition: Boolean by lazy {
     interaction.customizationArgsMap["allowMultipleItemsInSamePosition"]?.boolValue ?: false
   }
@@ -65,6 +131,7 @@ class DragAndDropSortInteractionViewModel private constructor(
       ?: listOf()
   }
 
+  // original
   private val contentIdHtmlMap: Map<String, String> =
     choiceSubtitledHtmls.associate { subtitledHtml ->
       val translatedHtml =
@@ -72,10 +139,13 @@ class DragAndDropSortInteractionViewModel private constructor(
       subtitledHtml.contentId to translatedHtml
     }
 
+  /*private val contentIdHtmlMap: Map<String, String> =
+    mapOf(Pair("ca_choices_0", "hi"), Pair("ca_choices_1", "bye"), Pair("ca_choices_2", "chao"), Pair("ca_choices_3", "tata"))*/
+
   private var answerErrorCetegory: AnswerErrorCategory = AnswerErrorCategory.NO_ERROR
 
   private val _originalChoiceItems: MutableList<DragDropInteractionContentViewModel> =
-    computeOriginalChoiceItems(contentIdHtmlMap, choiceSubtitledHtmls, this, resourceHandler)
+    computeOriginalChoiceItems(contentIdHtmlMap, choiceSubtitledHtmls, this, resourceHandler, fragment, explorationProgressController)
 
   private val _choiceItems = computeSelectedChoiceItems(
     contentIdHtmlMap,
@@ -91,9 +161,19 @@ class DragAndDropSortInteractionViewModel private constructor(
   var errorMessage = ObservableField<String>("")
 
   init {
+    Log.d("callinginit", "Calling init")
+
+    ephemeralStateLiveData2.observe(
+      fragment
+    ) { result ->
+      processEphemeralStateResult(result)
+    }
+
+    Log.d("callinginit", "After init")
     val callback: Observable.OnPropertyChangedCallback =
       object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable, propertyId: Int) {
+          Log.d("draganddrop", "onPropertyChanged: Property changed")
           interactionAnswerErrorOrAvailabilityCheckReceiver.onPendingAnswerErrorOrAvailabilityCheck(
             pendingAnswerError,
             inputAnswerAvailable = true // Allow submission without arranging or merging items.
@@ -117,8 +197,11 @@ class DragAndDropSortInteractionViewModel private constructor(
     adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
   ) {
     val item = _choiceItems[indexFrom]
+    Log.d("draganddrop", "onItemDragged: $item")
     _choiceItems.removeAt(indexFrom)
     _choiceItems.add(indexTo, item)
+    Log.d("draganddrop", "onItemDragged: original choice items - $_originalChoiceItems")
+    Log.d("draganddrop", "onItemDragged: choice items - $_choiceItems")
 
     // Update the data of item moved for every drag if merge icons are displayed.
     if (allowMultipleItemsInSamePosition) {
@@ -154,6 +237,8 @@ class DragAndDropSortInteractionViewModel private constructor(
   override fun getPendingAnswer(): UserAnswer = UserAnswer.newBuilder().apply {
     val selectedLists = _choiceItems.map { it.htmlContent }
     val userStringLists = _choiceItems.map { it.computeStringList() }
+    Log.d("draganddrop", "getPendingAnswer: Selected Lists - $selectedLists")
+    Log.d("draganddrop", "getPendingAnswer: user String Lists - $userStringLists")
     listOfHtmlAnswers = convertItemsToAnswer(userStringLists)
     answer = InteractionObject.newBuilder().apply {
       listOfSetsOfTranslatableHtmlContentIds =
@@ -183,6 +268,7 @@ class DragAndDropSortInteractionViewModel private constructor(
 
   /** Returns an HTML list containing all of the HTML string elements as items in the list. */
   private fun convertItemsToAnswer(htmlItems: List<StringList>): ListOfSetsOfHtmlStrings {
+    Log.d("draganddrop", "convertItemsToAnswer: html Items - $htmlItems")
     return ListOfSetsOfHtmlStrings.newBuilder()
       .addAllSetOfHtmlStrings(htmlItems)
       .build()
@@ -193,10 +279,35 @@ class DragAndDropSortInteractionViewModel private constructor(
     return allowMultipleItemsInSamePosition
   }
 
+/*  fun subscribeToCurrentState() {
+    ephemeralStateLiveData.observe(
+      fragment,
+      {
+        result ->
+        processEphemeralStateResult(result)
+      }
+    )
+  }*/
+
+  /*fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
+    when (result) {
+      is AsyncResult.Failure -> null
+      is AsyncResult.Pending -> {} // Display nothing until a valid result is available.
+      is AsyncResult.Success -> checkHasPreviousState(result.value)
+    }
+  }
+
+  fun checkHasPreviousState(ephemeralState: EphemeralState) {
+    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList}")
+    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList}")
+    Log.d("haspreviousstate", "checkHasPreviousState: Drag and Drop has ephemeral State? - ${ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[0].contentIdsList[0].contentId}")
+  }*/
+
   fun updateList(
     itemIndex: Int,
     adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
   ) {
+    Log.d("draganddrop", "updateList: Updating the list")
     val item = _choiceItems[itemIndex]
     val nextItem = _choiceItems[itemIndex + 1]
     nextItem.htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
@@ -219,6 +330,9 @@ class DragAndDropSortInteractionViewModel private constructor(
     val item = _choiceItems[itemIndex]
     _choiceItems.removeAt(itemIndex)
     item.htmlContent.contentIdsList.forEach { contentId ->
+      Log.d("haspreviousstate", "computeSelectedChoiceItems: Calling from unlink element")
+      val contentIdHtmlMap4: Map<String, String> =
+        mapOf(Pair("ca_choices_0", "hi4"), Pair("ca_choices_1", "bye4"), Pair("ca_choices_2", "chao4"), Pair("ca_choices_3", "tata4"))
       _choiceItems.add(
         itemIndex,
         DragDropInteractionContentViewModel(
@@ -229,7 +343,9 @@ class DragAndDropSortInteractionViewModel private constructor(
           itemIndex = 0,
           listSize = 0,
           dragAndDropSortInteractionViewModel = this,
-          resourceHandler = resourceHandler
+          resourceHandler = resourceHandler,
+          null,
+          null
         )
       )
     }
@@ -252,7 +368,9 @@ class DragAndDropSortInteractionViewModel private constructor(
   /** Implementation of [StateItemViewModel.InteractionItemFactory] for this view model. */
   class FactoryImpl @Inject constructor(
     private val resourceHandler: AppLanguageResourceHandler,
-    private val translationController: TranslationController
+    private val translationController: TranslationController,
+    private val fragment: Fragment,
+    private val explorationProgressController: ExplorationProgressController
   ) : InteractionItemFactory {
     override fun create(
       entityId: String,
@@ -275,7 +393,9 @@ class DragAndDropSortInteractionViewModel private constructor(
         writtenTranslationContext,
         resourceHandler,
         translationController,
-        userAnswerState
+        userAnswerState,
+        fragment,
+        explorationProgressController
       )
     }
   }
@@ -296,31 +416,379 @@ class DragAndDropSortInteractionViewModel private constructor(
     }.build()
   }
 
-  companion object {
+
+
+
+  // resets
+  /*companion object {
     private fun computeOriginalChoiceItems(
       contentIdHtmlMap: Map<String, String>,
       choiceStrings: List<SubtitledHtml>,
       dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
-      resourceHandler: AppLanguageResourceHandler
+      resourceHandler: AppLanguageResourceHandler,
+      fragment: Fragment,
+      explorationProgressController: ExplorationProgressController
     ): MutableList<DragDropInteractionContentViewModel> {
+
+      val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
+        explorationProgressController.getCurrentState().toLiveData()
+      }
+
+      fun processEphemeralStateResult(result: AsyncResult<EphemeralState>): MutableList<DragDropInteractionContentViewModel> {
+        when (result) {
+          is AsyncResult.Failure -> {}
+          is AsyncResult.Pending -> {} // Display nothing until a valid result is available.
+          is AsyncResult.Success -> {
+
+            return choiceStrings.mapIndexed { index, subtitledHtml ->
+              Log.d("haspreviousstate", "computeSelectedChoiceItems: Calling from compute original choice items")
+              DragDropInteractionContentViewModel(
+                contentIdHtmlMap = contentIdHtmlMap,
+                htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+                  addContentIds(
+                    TranslatableHtmlContentId.newBuilder().apply {
+                      Log.d("contentid", "computeOriginalChoiceItems: content id is - $contentId")
+//                contentId = subtitledHtml.contentId
+//                contentId = ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[0].contentIdsList[0].contentId
+                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState? - ${result.value}")
+                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState index value - ${result.value.pendingState.wrongAnswerList.get(0).userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[index].contentIdsList[0].contentId}")
+//                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState - ${ephState?.pendingState?.wrongAnswerList?.get(0)?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList?.get(0)?.contentIdsList?.get(0)?.contentId}")
+                      contentId = result.value.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[index].contentIdsList[0].contentId
+                        ?: subtitledHtml.contentId
+                    }
+                  )
+                }.build(),
+                itemIndex = index,
+                listSize = choiceStrings.size,
+                dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+                resourceHandler = resourceHandler,
+                null,
+                null
+              )
+            }.toMutableList()
+
+          }
+        }
+
+        return choiceStrings.mapIndexed { index, subtitledHtml ->
+          Log.d("haspreviousstate", "computeSelectedChoiceItems: Calling from compute original choice items")
+          DragDropInteractionContentViewModel(
+            contentIdHtmlMap = contentIdHtmlMap,
+            htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+              addContentIds(
+                TranslatableHtmlContentId.newBuilder().apply {
+                  Log.d("contentid", "computeOriginalChoiceItems: content id is - $contentId")
+                  contentId = subtitledHtml.contentId
+//                contentId = ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[0].contentIdsList[0].contentId
+//                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState? - ${ephState}")
+//                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState - ${ephState?.pendingState?.wrongAnswerList?.get(0)?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList?.get(0)?.contentIdsList?.get(0)?.contentId}")
+                  *//*contentId = ephState?.pendingState?.wrongAnswerList?.get(0)?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList?.get(index)?.contentIdsList?.get(0)?.contentId
+                    ?: subtitledHtml.contentId*//*
+                }
+              )
+            }.build(),
+            itemIndex = index,
+            listSize = choiceStrings.size,
+            dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+            resourceHandler = resourceHandler,
+            null,
+            null
+          )
+        }.toMutableList()
+      }
+
+//      fun subscribeToCurrentState() {
+        ephemeralStateLiveData.observe(
+          fragment
+        ) { result ->
+          processEphemeralStateResult(result)
+        }
+//      }
+
+      *//*fun processEphemeralStateResult(result: AsyncResult<EphemeralState>) {
+        when (result) {
+          is AsyncResult.Failure -> null
+          is AsyncResult.Pending -> {} // Display nothing until a valid result is available.
+          is AsyncResult.Success -> checkHasPreviousState(result.value)
+        }
+      }*//*
+
+
+//      Log.d("haspreviousstate", "computeSelectedChoiceItems: from compute original choice - $sub")
+      Log.d("haspreviousstate", "computeSelectedChoiceItems: from compute original choice - $choiceStrings")
       return choiceStrings.mapIndexed { index, subtitledHtml ->
+        Log.d("haspreviousstate", "computeSelectedChoiceItems: Calling from compute original choice items")
         DragDropInteractionContentViewModel(
           contentIdHtmlMap = contentIdHtmlMap,
           htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
             addContentIds(
               TranslatableHtmlContentId.newBuilder().apply {
+                Log.d("contentid", "computeOriginalChoiceItems: content id is - $contentId")
                 contentId = subtitledHtml.contentId
+//                contentId = ephemeralState.pendingState.wrongAnswerList[0].userAnswer.answer.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList[0].contentIdsList[0].contentId
+//                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState? - ${ephState}")
+//                Log.d("haspreviousstate", "computeOriginalChoiceItems: ephState - ${ephState?.pendingState?.wrongAnswerList?.get(0)?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList?.get(0)?.contentIdsList?.get(0)?.contentId}")
+                *//*contentId = ephState?.pendingState?.wrongAnswerList?.get(0)?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList?.get(index)?.contentIdsList?.get(0)?.contentId
+                  ?: subtitledHtml.contentId*//*
               }
             )
           }.build(),
           itemIndex = index,
           listSize = choiceStrings.size,
           dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
-          resourceHandler = resourceHandler
+          resourceHandler = resourceHandler,
+          null,
+          null
         )
       }.toMutableList()
     }
+  }*/
+
+
+
+
+
+
+
+
+  companion object {
+    private fun computeOriginalChoiceItems(
+      contentIdHtmlMap: Map<String, String>,
+      choiceStrings: List<SubtitledHtml>,
+      dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
+      resourceHandler: AppLanguageResourceHandler,
+      fragment: Fragment,
+      explorationProgressController: ExplorationProgressController
+    ): MutableList<DragDropInteractionContentViewModel> {
+      var updatedContentIdMap: Map<String?, String?> = mapOf()
+
+      val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
+        explorationProgressController.getCurrentState().toLiveData()
+      }
+
+      var choiceItems: MutableList<DragDropInteractionContentViewModel> = mutableListOf()
+
+      fun processEphemeralStateResult(result: AsyncResult<EphemeralState>){
+        choiceItems = when (result) {
+//          is AsyncResult.Failure -> mutableListOf()
+//          is AsyncResult.Pending -> mutableListOf()
+          is AsyncResult.Success -> {
+            val state = result.value
+            val wrongAnswerList = state.pendingState.wrongAnswerList
+
+            Log.d("haspreviousstate", "computeOriginalChoiceItems: wrong answer list - $wrongAnswerList")
+
+            choiceStrings.mapIndexed { index, subtitledHtml ->
+              Log.d("haspreviousstate", "computeOriginalChoiceItems: Computing original choice items")
+
+              val contentIdFromWrongAnswer = wrongAnswerList?.lastOrNull()
+//                ?.firstOrNull()
+                ?.userAnswer
+                ?.answer
+                ?.listOfSetsOfTranslatableHtmlContentIds
+                ?.contentIdListsList
+                ?.getOrNull(index)
+                ?.contentIdsList
+                ?.firstOrNull()
+                ?.contentId
+//              Log.d("haspreviousstate", "computeOriginalChoiceItems: Wrong answer list - ${wrongAnswerList?.lastOrNull()?.userAnswer?.answer?.listOfSetsOfTranslatableHtmlContentIds?.contentIdListsList[0]?.contentIdsList[0]?.contentId}")
+
+              val contentHtmlFromWrongAnswer = wrongAnswerList?.lastOrNull()
+                ?.userAnswer
+                ?.listOfHtmlAnswers
+                ?.setOfHtmlStringsList
+                ?.get(index)
+                ?.htmlList
+                ?.firstOrNull()
+
+              Log.d("contenthtmlfromwrong", "processEphemeralStateResult: Content html - $contentHtmlFromWrongAnswer")
+
+//              updatedContentIdMap.plus(Pair(contentIdFromWrongAnswer, contentHtmlFromWrongAnswer))
+              updatedContentIdMap = updatedContentIdMap.plus(Pair(contentIdFromWrongAnswer, contentHtmlFromWrongAnswer))
+
+
+              Log.d("contenthtmlfromwrong", "processEphemeralStateResult: updated Content id map - $updatedContentIdMap")
+
+              val contentIdHtmlMap1: Map<String, String> =
+              mapOf(Pair("ca_choices_0", "hi1"), Pair("ca_choices_1", "bye1"), Pair("ca_choices_2", "chao1"), Pair("ca_choices_3", "tata1"))
+
+              DragDropInteractionContentViewModel(
+//                contentIdHtmlMap = (updatedContentIdMap ?: contentIdHtmlMap) as Map<String, String>,
+//                contentIdHtmlMap = (updatedContentIdMap) as Map<String, String>,
+                contentIdHtmlMap = contentIdHtmlMap1,
+                htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+                  addContentIds(
+                    TranslatableHtmlContentId.newBuilder().apply {
+                      contentId = contentIdFromWrongAnswer ?: subtitledHtml.contentId
+                      Log.d("contentid", "computeOriginalChoiceItems: content id is - $contentId")
+                    }
+                  )
+                }.build(),
+                itemIndex = index,
+                listSize = choiceStrings.size,
+                dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+                resourceHandler = resourceHandler,
+                null,
+                null
+              )
+            }.toMutableList()
+          }
+          else -> mutableListOf()
+        }
+      }
+
+      ephemeralStateLiveData.observe(fragment) { result ->
+        Log.d("contentid", "computeOriginalChoiceItems: in ephemeral state live data - $choiceItems")
+        Log.d("contentid", "computeOriginalChoiceItems: content id map - $contentIdHtmlMap")
+        processEphemeralStateResult(result)
+        Log.d("contentid", "computeOriginalChoiceItems: in ephemeral state live data 2 - $choiceItems")
+      }
+
+
+      Log.d("contentid", "computeOriginalChoiceItems: returning - $choiceItems")
+//      return choiceItems
+
+      return choiceItems.ifEmpty {
+        Log.d("contentid", "computeOriginalChoiceItems: empty choice items - $choiceItems")
+        val contentIdHtmlMap3: Map<String, String> =
+        mapOf(Pair("ca_choices_0", "hi3"), Pair("ca_choices_1", "bye3"), Pair("ca_choices_2", "chao3"), Pair("ca_choices_3", "tata3"))
+        choiceStrings.mapIndexed { index, subtitledHtml ->
+          DragDropInteractionContentViewModel(
+//            contentIdHtmlMap = contentIdHtmlMap3,
+            contentIdHtmlMap = (updatedContentIdMap) as Map<String, String> ?: contentIdHtmlMap3,
+            htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+              addContentIds(
+                TranslatableHtmlContentId.newBuilder().apply {
+                  contentId = subtitledHtml.contentId
+                }
+              )
+            }.build(),
+            itemIndex = index,
+            listSize = choiceStrings.size,
+            dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+            resourceHandler = resourceHandler,
+            null,
+            null
+          )
+        }.toMutableList()
+      }
+    }
   }
+
+
+
+
+
+
+
+
+
+  /*private fun computeOriginalChoiceItems(
+    contentIdHtmlMap: Map<String, String>,
+    choiceStrings: List<SubtitledHtml>,
+    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
+    resourceHandler: AppLanguageResourceHandler,
+    fragment: Fragment,
+    explorationProgressController: ExplorationProgressController
+  ): MutableList<DragDropInteractionContentViewModel> {
+
+    val choiceItemsLiveData = MutableLiveData<List<DragDropInteractionContentViewModel>>()
+
+    val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
+      explorationProgressController.getCurrentState().toLiveData()
+    }
+
+    ephemeralStateLiveData.observe(fragment) { result ->
+      val choiceItems = processEphemeralStateResult(result, contentIdHtmlMap, choiceStrings, dragAndDropSortInteractionViewModel)
+      choiceItemsLiveData.value = choiceItems
+    }
+
+    return choiceItemsLiveData
+  }*/
+
+  /*private fun computeOriginalChoiceItems(
+    contentIdHtmlMap: Map<String, String>,
+    choiceStrings: List<SubtitledHtml>,
+    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel,
+    resourceHandler: AppLanguageResourceHandler,
+    fragment: Fragment,
+    explorationProgressController: ExplorationProgressController
+  ): MutableList<DragDropInteractionContentViewModel> {
+
+    val choiceItems = mutableListOf<DragDropInteractionContentViewModel>()
+
+    val ephemeralStateLiveData: LiveData<AsyncResult<EphemeralState>> by lazy {
+      explorationProgressController.getCurrentState().toLiveData()
+    }
+
+    ephemeralStateLiveData.observe(fragment) { result ->
+      val processedChoiceItems = processEphemeralStateResult(
+        result, contentIdHtmlMap, choiceStrings, dragAndDropSortInteractionViewModel
+      )
+      choiceItems.addAll(processedChoiceItems)
+    }
+
+    return choiceItems
+  }
+
+
+  private fun processEphemeralStateResult(
+    result: AsyncResult<EphemeralState>,
+    contentIdHtmlMap: Map<String, String>,
+    choiceStrings: List<SubtitledHtml>,
+    dragAndDropSortInteractionViewModel: DragAndDropSortInteractionViewModel
+  ): List<DragDropInteractionContentViewModel> {
+    return when (result) {
+      is AsyncResult.Success -> {
+        val state = result.value
+        val wrongAnswerList = state.pendingState.wrongAnswerList
+
+        choiceStrings.mapIndexed { index, subtitledHtml ->
+          val contentIdFromWrongAnswer = wrongAnswerList
+            ?.firstOrNull()
+            ?.userAnswer
+            ?.answer
+            ?.listOfSetsOfTranslatableHtmlContentIds
+            ?.contentIdListsList
+            ?.getOrNull(index)
+            ?.contentIdsList
+            ?.firstOrNull()
+            ?.contentId
+
+          DragDropInteractionContentViewModel(
+            contentIdHtmlMap = contentIdHtmlMap,
+            htmlContent = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+              addContentIds(
+                TranslatableHtmlContentId.newBuilder().apply {
+                  contentId = contentIdFromWrongAnswer ?: subtitledHtml.contentId
+                }
+              )
+            }.build(),
+            itemIndex = index,
+            listSize = choiceStrings.size,
+            dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
+            resourceHandler = resourceHandler,
+            null,
+            null
+          )
+        }
+      }
+      else -> emptyList()
+    }
+  }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   private fun computeSelectedChoiceItems(
     contentIdHtmlMap: Map<String, String>,
@@ -330,17 +798,25 @@ class DragAndDropSortInteractionViewModel private constructor(
     userAnswerState: UserAnswerState
   ): MutableList<DragDropInteractionContentViewModel> {
     return if (userAnswerState.listOfSetsOfTranslatableHtmlContentIds.contentIdListsCount == 0) {
+        Log.d("contentid", "computeOriginalChoiceItems: here in if")
+//        Log.d("contentid", "computeOriginalChoiceItems: here in if with sub - $sub")
       _originalChoiceItems.toMutableList()
     } else {
+      Log.d("haspreviousstate", "computeSelectedChoiceItems: Calling from compute selected choice items")
       userAnswerState.listOfSetsOfTranslatableHtmlContentIds.contentIdListsList
         .mapIndexed { index, contentId ->
+          Log.d("contentid", "computeOriginalChoiceItems: content id from computeselected is - $contentId")
+          val contentIdHtmlMap2: Map<String, String> =
+            mapOf(Pair("ca_choices_0", "hi2"), Pair("ca_choices_1", "bye2"), Pair("ca_choices_2", "chao2"), Pair("ca_choices_3", "tata2"))
           DragDropInteractionContentViewModel(
-            contentIdHtmlMap = contentIdHtmlMap,
+            contentIdHtmlMap = contentIdHtmlMap2,
             htmlContent = contentId,
             itemIndex = index,
             listSize = choiceStrings.size,
             dragAndDropSortInteractionViewModel = dragAndDropSortInteractionViewModel,
-            resourceHandler = resourceHandler
+            resourceHandler = resourceHandler,
+            null,
+            null
           )
         }.toMutableList()
     }

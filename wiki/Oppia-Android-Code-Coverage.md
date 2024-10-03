@@ -7,7 +7,7 @@
     - [1. Continuous Integration Checks on Pull Requests](#1-continuous-integration-checks-on-pull-requests)
         - [1.1 Understanding the CI Coverage Report](#11-understanding-the-ci-coverage-report)
     - [2. Local Command Line Interface (CLI) Tools](#2-local-command-line-interface-cli-tools)
-        - [2.1 Understanding the CI Coverage Reports](#21-understanding-the-ci-coverage-report)
+        - [2.1 Understanding the CI Coverage Report](#21-understanding-the-ci-coverage-report)
 - [Increasing Code Coverage Metrics](#increasing-code-coverage-metrics)
 - [Unit-Centric Coverage Philosophy](#unit-centric-coverage-philosophy)
 - [Limitations of the code coverage tool](#limitations-of-the-code-coverage-tool)

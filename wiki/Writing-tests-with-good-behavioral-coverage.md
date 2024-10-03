@@ -3,7 +3,7 @@
 - [What is Behavioral Coverage?](#what-is-behavioral-coverage)
 - [Understanding Behavioral Coverage and its Importance](#understanding-behavioral-coverage-and-its-importance)
 - [Writing Effective Tests](#writing-effective-tests)
-  - [1. Understand the Requirements](#1-understanding-the-requirements)
+  - [1. Understanding the Requirements](#1-understanding-the-requirements)
   - [2. Writing Clear and Descriptive Test Cases](#2-writing-clear-and-descriptive-test-cases)
   - [3. Focusing on Specific Test Cases](#3-focusing-on-specific-test-cases)
   - [4. Covering Different Scenarios](#4-covering-different-scenarios)

@@ -3,7 +3,7 @@
 - [Overview & Disclaimer](#overview--disclaimer)
 - [Instructions](#instructions)
 - [Instructions1](#instructions1-)
-- [Instructions2](#instructions2-otter)
+- [Instructions2 :otter:](#instructions2-otter)
 - [Instructions3](#-instructions3)
 - [Instructions4](#otter-instructions4)
   - [1. Install Ubuntu subsystem](#1-install-ubuntu-subsystem)

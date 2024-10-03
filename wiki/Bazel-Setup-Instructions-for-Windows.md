@@ -3,11 +3,9 @@
 - [Overview & Disclaimer](#overview--disclaimer)
 - [Instructions](#instructions)
 - [Instructions1](#instructions1-)
-- [Instructions2 🦦](#instructions2-)
-- [Instructions3 :otter:](#instructions3-otter)
-- [Instructions4](#-instructions4)
-- [🦦 Instructions5](#-instructions5)
-- [:otter: Instructions6](#otter-instructions6)
+- [Instructions2 :otter:](#instructions2-otter)
+- [Instructions3](#-instructions3)
+- [:otter: Instructions4](#otter-instructions4)
   - [1. Install Ubuntu subsystem](#1-install-ubuntu-subsystem)
   - [2. Prerequisite debian packages](#2-prerequisite-debian-packages)
   - [3. Installing the Android SDK](#3-installing-the-android-sdk)
@@ -26,11 +24,9 @@ Unlike Unix-based systems where Bazel runs natively without issue, the current s
 
 ## Instructions
 ## Instructions1 🦦
-## Instructions2 🦦
-## Instructions3 :otter:
-## 🦦 Instructions4
-## 🦦 Instructions5
-## :otter: Instructions6
+## Instructions2 :otter:
+## 🦦 Instructions3
+## :otter: Instructions4
 
 **Main prerequisites**:
 - Windows 10: These instructions are geared towards users of Windows 10 (older versions will not be compatible). If you're in using an older version of Windows, please follow up with a comment on [this issue](https://github.com/oppia/oppia-android/issues/3371).

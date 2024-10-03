@@ -5,7 +5,7 @@
 - [Instructions1](#instructions1-)
 - [Instructions2 :otter:](#instructions2-otter)
 - [Instructions3](#-instructions3)
-- [:otter:Instructions4](#otter-instructions4)
+- [:otter: Instructions4](#otter-instructions4)
   - [1. Install Ubuntu subsystem](#1-install-ubuntu-subsystem)
   - [2. Prerequisite debian packages](#2-prerequisite-debian-packages)
   - [3. Installing the Android SDK](#3-installing-the-android-sdk)

@@ -6,7 +6,7 @@ Here are the steps for making a PR to the Oppia Android codebase:
 1. [Make a local code change](#step-1-making-a-local-code-change)
 2. [Create a PR on GitHub](#step-2-create-a-pr-on-github)
 3. [Address review comments until all reviewers give LGTM](#step-3-address-review-comments-until-all-reviewers-give-lgtm) (this section is important, please read it carefully)
-4. [Tidy up and celebrate!](#step-4-tidy-up-and-celebrate-confetti_ball)
+4. [Tidy up and celebrate! :confetti_ball:](#step-4-tidy-up-and-celebrate-confetti_ball)
 
 Note: If your change involves more than around 500 lines of code, we recommend first creating a [design doc](https://github.com/oppia/oppia/wiki/Writing-design-docs). This helps avoid duplication of effort, and allows us to offer advice and suggestions on the implementation approach.
 

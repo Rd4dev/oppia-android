@@ -61,6 +61,9 @@ private fun checkTableOfContents(file: File) {
   }
   if (eOfIdx == -1) error("Table of Contents didn't end with a blank line.")
 
+  println("stofindx - $tocStartIdx")
+  println("eofindx - $eOfIdx")
+
   val tocSpecificLines = fileContents.subList(tocStartIdx, tocStartIdx + eOfIdx + 1)
 
   for (line in tocSpecificLines) {

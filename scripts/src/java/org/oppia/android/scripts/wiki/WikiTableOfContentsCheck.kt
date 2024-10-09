@@ -65,6 +65,7 @@ private fun checkTableOfContents(file: File) {
 
   for (line in tocSpecificLines) {
     if (line.trimStart().startsWith("- [") && !line.contains("https://")) {
+      println("Line in line - $line")
       validateTableOfContents(file, line)
     }
   }

@@ -86,7 +86,7 @@ private fun validateTableOfContents(file: File, line: String) {
   val linkRegex = "\\(#(.*?)\\)".toRegex()
   val link = linkRegex.find(line)?.groupValues?.get(1)?.removePrefix("#")?.replace('-', ' ')
     ?.replace(Regex("[?&./:’'*!,(){}\\[\\]+]"), "")
-    ?.replace("confetti_ball", "")?.trim()
+    ?.trim()
   println("Link - $link)
 
   // Checks if the table of content title matches with the header link text.

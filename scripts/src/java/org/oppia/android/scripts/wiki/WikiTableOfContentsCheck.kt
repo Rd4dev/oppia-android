@@ -33,7 +33,7 @@ fun main(vararg args: String) {
  *
  * @param wikiDir the default working directory
  */
-fun processWikiDirectory(wikiDir: File) {
+private fun processWikiDirectory(wikiDir: File) {
   wikiDir.listFiles()?.forEach { file ->
     checkTableOfContents(file)
   }
@@ -44,7 +44,7 @@ fun processWikiDirectory(wikiDir: File) {
  *
  * @param file the wiki file to process.
  */
-fun checkTableOfContents(file: File) {
+private fun checkTableOfContents(file: File) {
   println("Checking file - $file")
   val fileContents = file.readLines()
   val tocStartIdx = fileContents.indexOfFirst {
@@ -76,16 +76,18 @@ fun checkTableOfContents(file: File) {
  * @param file the wiki file being validated.
  * @param line the line containing the Table of Contents entry.
  */
-fun validateTableOfContents(file: File, line: String) {
+private fun validateTableOfContents(file: File, line: String) {
   val titleRegex = "\\[(.*?)\\]".toRegex()
   val title = titleRegex.find(line)?.groupValues?.get(1)?.replace('-', ' ')
     ?.replace(Regex("[?&./:’'*!,(){}\\[\\]+]"), "")
     ?.trim()
+  println("title - $title")
 
   val linkRegex = "\\(#(.*?)\\)".toRegex()
   val link = linkRegex.find(line)?.groupValues?.get(1)?.removePrefix("#")?.replace('-', ' ')
     ?.replace(Regex("[?&./:’'*!,(){}\\[\\]+]"), "")
     ?.replace("confetti_ball", "")?.trim()
+  println("Link - $link)
 
   // Checks if the table of content title matches with the header link text.
   val matches = title.equals(link, ignoreCase = true)

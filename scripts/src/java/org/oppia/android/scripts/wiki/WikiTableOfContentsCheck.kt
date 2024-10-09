@@ -51,8 +51,8 @@ fun checkTableOfContents(file: File) {
     it.contains(Regex("""##\s+Table\s+of\s+Contents""", RegexOption.IGNORE_CASE))
   }
   if (tocStartIdx == -1) {
-    return
     println("No TOC")
+    return
   }
 
   // Skipping the blank line after the ## Table of Contents

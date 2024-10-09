@@ -58,7 +58,7 @@ private fun checkTableOfContents(file: File) {
   // Skipping the blank line after the ## Table of Contents
   val eOfIdx = fileContents.subList(tocStartIdx + 2, fileContents.size).indexOfFirst {
     it.isBlank()
-  } + 1
+  }.plus(1)
   if (eOfIdx == -1) error("Table of Contents didn't end with a blank line.")
 
   println("stofindx - $tocStartIdx")

@@ -45,12 +45,14 @@ fun processWikiDirectory(wikiDir: File) {
  * @param file the wiki file to process.
  */
 fun checkTableOfContents(file: File) {
+  println("Checking file - $file)
   val fileContents = file.readLines()
   val tocStartIdx = fileContents.indexOfFirst {
     it.contains(Regex("""##\s+Table\s+of\s+Contents""", RegexOption.IGNORE_CASE))
   }
   if (tocStartIdx == -1) {
     return
+    println("No TOC")
   }
 
   // Skipping the blank line after the ## Table of Contents

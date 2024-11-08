@@ -1,4 +1,4 @@
-## Instructions
+## Instructions.
 
 **The steps to install Bazel on Linux are:**
 1. Install Bazel

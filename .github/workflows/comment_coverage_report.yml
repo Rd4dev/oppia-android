@@ -109,15 +109,15 @@ jobs:
           
             if diff -B CoverageReport.md latest_code_coverage_comment.md > /dev/null; then
               echo "No changes detected; skipping coverage comment."
-              echo "skip_coverage_comment=true" >> $GITHUB_ENV
+              echo "skip_coverage_comment = true" >> $GITHUB_ENV
             else
               echo "Changes detected; proceeding with the coverage comment."
               diff CoverageReport.md latest_code_coverage_comment.md || true
-              echo "skip_coverage_comment=false" >> $GITHUB_ENV
+              echo "skip_coverage_comment = false" >> $GITHUB_ENV
             fi
           else
             echo "No previous coverage comment found to compare; posting evaluated coverage comment."
-            echo "skip_coverage_comment=false" >> $GITHUB_ENV
+            echo "skip_coverage_comment = false" >> $GITHUB_ENV
           fi
 
       - name: Upload Coverage Report as PR Comment

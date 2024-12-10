@@ -1,5 +1,3 @@
-# Contains jobs corresponding to issue related checks.
-
 name: PR Workflow
 
 on:
@@ -13,4 +11,3 @@ jobs:
       - name: Test Step
         run: |
           echo "Testing..."
-

@@ -1,0 +1,16 @@
+# Contains jobs corresponding to issue related checks.
+
+name: PR Workflow
+
+on:
+  pull_request
+
+jobs:
+  test-pr-job:
+    name: Test PR Job
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Test Step
+        run: |
+          echo "Testing..."
+

@@ -1,0 +1,13 @@
+name: WD Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-wd-job:
+    name: Test WD Job
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Test Step
+        run: |
+          echo "Testing..."

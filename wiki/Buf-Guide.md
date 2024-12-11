@@ -17,7 +17,7 @@ Once you have completed all the [installation steps](https://github.com/oppia/op
 
 ## Configuration File 
 
-We have a configuration file `buf.yaml` at the root of the project. Following is the list of things we are checking and the list of things we are excluding from our check.
+We have a configuration file `buf.yaml` at the root of the project. Following is the list of things we are checking and the list of things we are excluding from our check..
 
 #### Checking:
 * `DIRECTORY_SAME_PACKAGE` checks that all files in a given directory are in the same package.

@@ -1,4 +1,4 @@
-Please follow the following style rules when writing code, in order to minimize unnecessary back-and-forth during code review.
+Please follow the following style rules when writing code, in order to minimize unnecessary back-and-forth during code review..
 
 ## Table of Contents
 

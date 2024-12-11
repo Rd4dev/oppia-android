@@ -6,7 +6,7 @@
 
 # Installation
 Once you have completed all the [installation steps](https://github.com/oppia/oppia-android/wiki/Installing-Oppia-Android), you will have a `buf` file in your `opensource/oppia-android-tools` folder.<br>
-**Note: Currently, Buf is not available for windows.**
+**Note: Currently, Buf is not available for windows..**
 
 ## Commands
 

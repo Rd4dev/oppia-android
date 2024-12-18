@@ -29,6 +29,8 @@ class AudioViewModel @Inject constructor(
   private val resourceHandler: AppLanguageResourceHandler
 ) : ObservableViewModel() {
 
+  var currentPos = 0
+
   private lateinit var state: State
   private lateinit var explorationId: String
   private var voiceoverMap = mapOf<String, Voiceover>()
@@ -195,7 +197,11 @@ class AudioViewModel @Inject constructor(
       is AsyncResult.Success -> when (playProgressResult.value.type) {
         PlayStatus.PREPARED -> {
           if (autoPlay) {
+            positionLiveData.observeForever {
+              if (it != 0) currentPos = it
+            }
             audioPlayerController.play(isPlayingFromAutoPlay = true, reloadingMainContent)
+            handleSeekTo(currentPos)
           }
           autoPlay = false
           reloadingMainContent = false

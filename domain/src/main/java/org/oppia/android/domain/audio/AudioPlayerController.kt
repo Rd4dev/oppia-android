@@ -103,9 +103,13 @@ class AudioPlayerController @Inject constructor(
       }
       setMediaPlayerListeners()
     }
-    val progressLiveData = AudioMutableLiveData()
-    playProgress = progressLiveData
-    return progressLiveData
+
+    if (playProgress == null) {
+      val progressLiveData = AudioMutableLiveData()
+      playProgress = progressLiveData
+    }
+
+    return playProgress ?: AudioMutableLiveData()
   }
 
   /**

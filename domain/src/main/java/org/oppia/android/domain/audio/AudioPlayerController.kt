@@ -137,8 +137,17 @@ class AudioPlayerController @Inject constructor(
     mediaPlayer.setOnPreparedListener {
       prepared = true
       duration = it.duration
-      playProgress?.value =
-        AsyncResult.Success(PlayProgress(PlayStatus.PREPARED, 0, duration))
+      val prevPos = playProgress?.value
+      if (prevPos is AsyncResult.Success) {
+        val prevPosProg = prevPos.value
+        val prevPosition = prevPosProg.position
+
+        playProgress?.value =
+          AsyncResult.Success(PlayProgress(PlayStatus.PREPARED, prevPosition, duration))
+      } else {
+        playProgress?.value =
+          AsyncResult.Success(PlayProgress(PlayStatus.PREPARED, 0, duration))
+      }
     }
     mediaPlayer.setOnErrorListener { _, what, extra ->
       playProgress?.value =
@@ -160,7 +169,7 @@ class AudioPlayerController @Inject constructor(
       exceptionsController.logNonFatalException(e)
       oppiaLogger.e("AudioPlayerController", "Failed to set data source for media player", e)
     }
-    playProgress?.value = AsyncResult.Pending()
+    if (playProgress == null) playProgress?.value = AsyncResult.Pending()
   }
 
   /**

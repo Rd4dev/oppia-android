@@ -21,7 +21,7 @@ import org.oppia.android.util.extensions.putProtoExtra
 import org.oppia.android.util.logging.CurrentAppScreenNameIntentDecorator.decorateWithScreenName
 import javax.inject.Inject
 
-/** Activity for recent stories. */
+/** Activity for recent stories. Source file changes*/
 class RecentlyPlayedActivity :
   InjectableAutoLocalizedAppCompatActivity(),
   RouteToExplorationListener,

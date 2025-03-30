@@ -1,0 +1,17 @@
+"""
+Tests for lightweight exploration player domain components.
+"""
+
+load("//:oppia_android_test.bzl", "oppia_android_test")
+
+oppia_android_test(
+    name = "StringExtensionsTest",
+    srcs = ["StringExtensionsTest.kt"],
+    custom_package = "org.oppia.android.util.extensions",
+    test_class = "org.oppia.android.util.extensions.StringExtensionsTest",
+    test_manifest = "//utility:test_manifest",
+    deps = [
+        "//testing",
+        "//third_party:robolectric_android-all",
+    ],
+)

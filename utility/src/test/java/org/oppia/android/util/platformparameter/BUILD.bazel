@@ -1,0 +1,17 @@
+"""
+Tests for platform_parameter-specific utilities.
+"""
+
+load("//:oppia_android_test.bzl", "oppia_android_test")
+
+oppia_android_test(
+    name = "PlatformParameterSingletonTest",
+    srcs = ["PlatformParameterSingletonTest.kt"],
+    custom_package = "org.oppia.android.util.platformparameter",
+    test_class = "org.oppia.android.util.platformparameter.PlatformParameterSingletonTest",
+    test_manifest = "//utility:test_manifest",
+    deps = [
+        "//testing",
+        "//testing/src/main/java/org/oppia/android/testing/junit:oppia_parameterized_test_runner",
+    ],
+)

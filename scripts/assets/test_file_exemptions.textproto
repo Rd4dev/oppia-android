@@ -788,7 +788,7 @@ test_file_exemption {
 }
 test_file_exemption {
   exempted_file_path: "app/src/main/java/org/oppia/android/app/help/faq/FAQListActivity.kt"
-  test_file_not_required: true
+  source_file_is_incompatible_with_code_coverage: true
 }
 test_file_exemption {
   exempted_file_path: "app/src/main/java/org/oppia/android/app/help/faq/FAQListActivityPresenter.kt"
@@ -1061,6 +1061,10 @@ test_file_exemption {
 test_file_exemption {
   exempted_file_path: "app/src/main/java/org/oppia/android/app/home/recentlyplayed/PromotedStoryViewModel.kt"
   test_file_not_required: true
+}
+test_file_exemption {
+  exempted_file_path: "app/src/main/java/org/oppia/android/app/home/recentlyplayed/RecentlyPlayedActivity.kt"
+  source_file_is_incompatible_with_code_coverage: true
 }
 test_file_exemption {
   exempted_file_path: "app/src/main/java/org/oppia/android/app/home/recentlyplayed/RecentlyPlayedActivityPresenter.kt"
@@ -3691,10 +3695,6 @@ test_file_exemption {
   test_file_not_required: true
 }
 test_file_exemption {
-  exempted_file_path: "domain/src/main/java/org/oppia/android/domain/oppialogger/survey/SurveyEventsLogger.kt"
-  source_file_is_incompatible_with_code_coverage: true
-}
-test_file_exemption {
   exempted_file_path: "domain/src/main/java/org/oppia/android/domain/platformparameter/PlatformParameterAlphaModule.kt"
   test_file_not_required: true
 }
@@ -3861,18 +3861,6 @@ test_file_exemption {
 test_file_exemption {
   exempted_file_path: "domain/src/test/java/org/oppia/android/domain/classify/InteractionObjectTestBuilder.kt"
   test_file_not_required: true
-}
-test_file_exemption {
-  exempted_file_path: "instrumentation/src/java/org/oppia/android/instrumentation/application/EndToEndTestGcsResourceModule.kt"
-  source_file_is_incompatible_with_code_coverage: true
-}
-test_file_exemption {
-  exempted_file_path: "instrumentation/src/java/org/oppia/android/instrumentation/application/EndToEndTestImageParsingModule.kt"
-  source_file_is_incompatible_with_code_coverage: true
-}
-test_file_exemption {
-  exempted_file_path: "instrumentation/src/java/org/oppia/android/instrumentation/application/EndToEndTestNetworkConfigModule.kt"
-  source_file_is_incompatible_with_code_coverage: true
 }
 test_file_exemption {
   exempted_file_path: "instrumentation/src/java/org/oppia/android/instrumentation/application/TestApplicationComponent.kt"
@@ -4243,10 +4231,6 @@ test_file_exemption {
   test_file_not_required: true
 }
 test_file_exemption {
-  exempted_file_path: "utility/src/main/java/org/oppia/android/util/accessibility/FakeAccessibilityService.kt"
-  source_file_is_incompatible_with_code_coverage: true
-}
-test_file_exemption {
   exempted_file_path: "utility/src/main/java/org/oppia/android/util/caching/AssetRepository.kt"
   test_file_not_required: true
 }
@@ -4305,10 +4289,6 @@ test_file_exemption {
 test_file_exemption {
   exempted_file_path: "utility/src/main/java/org/oppia/android/util/enumfilter/EnumFilterUtil.kt"
   test_file_not_required: true
-}
-test_file_exemption {
-  exempted_file_path: "utility/src/main/java/org/oppia/android/util/extensions/StringExtensions.kt"
-  source_file_is_incompatible_with_code_coverage: true
 }
 test_file_exemption {
   exempted_file_path: "utility/src/main/java/org/oppia/android/util/gcsresource/GcsResourceAnnotations.kt"

@@ -1407,7 +1407,6 @@ class RunCoverageTest {
     assertThat(exception).hasMessageThat()
       .contains("Coverage Analysis$BOLD$RED FAILED$RESET")
 
-
     val expectedResult = buildString {
       append("## Coverage Report\n\n")
       append("### Results\n")

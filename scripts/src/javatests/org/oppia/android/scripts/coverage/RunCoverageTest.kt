@@ -61,7 +61,7 @@ class RunCoverageTest {
   }
 
   @Test
-  fun testRunCoverage_missingTestFileNotExempted_generatesFailureReport() {
+  fun testRunCoverage_missingTestFileNotExempted_throwsException() {
     val sampleFile = "file.kt"
     testBazelWorkspace.initEmptyWorkspace()
     tempFolder.newFile(sampleFile)
@@ -74,26 +74,7 @@ class RunCoverageTest {
     }
 
     assertThat(exception).hasMessageThat()
-      .contains("Coverage Analysis$BOLD$RED FAILED$RESET")
-
-    val failureMessage =
-      "No appropriate test file found for $sampleFile."
-
-    val expectedMarkdown = buildString {
-      append("## Coverage Report\n\n")
-      append("### Results\n")
-      append("Number of files assessed: 1\n")
-      append("Overall Coverage: **0.00%**\n")
-      append("Coverage Analysis: **FAIL** :x:\n")
-      append("##\n\n")
-      append("### Failure Cases\n\n")
-      append("| File | Failure Reason | Status |\n")
-      append("|------|----------------|--------|\n")
-      append("| ${getFilenameAsDetailsSummary(sampleFile)} | $failureMessage | :x: |")
-      append(oppiaCoverageWikiPageLinkNote)
-    }
-
-    assertThat(readFinalMdReport()).isEqualTo(expectedMarkdown)
+      .contains("No appropriate test file found for the source file - $sampleFile")
   }
 
   @Test
@@ -1382,10 +1363,7 @@ class RunCoverageTest {
       "coverage/main/java/com/example/AddNums.kt",
       "coverage/main/java/com/example/LowTestNums.kt",
       exemptedFile,
-      "file.kt"
     )
-
-    tempFolder.newFile("file.kt")
 
     val testFileExemption = TestFileExemptions.TestFileExemption.newBuilder().apply {
       this.exemptedFilePath = exemptedFile
@@ -1429,20 +1407,14 @@ class RunCoverageTest {
     assertThat(exception).hasMessageThat()
       .contains("Coverage Analysis$BOLD$RED FAILED$RESET")
 
-    val failureMessage =
-      "No appropriate test file found for file.kt."
 
     val expectedResult = buildString {
       append("## Coverage Report\n\n")
       append("### Results\n")
-      append("Number of files assessed: 4\n")
+      append("Number of files assessed: 3\n")
       append("Overall Coverage: **37.50%**\n")
       append("Coverage Analysis: **FAIL** :x:\n")
       append("##\n\n")
-      append("### Failure Cases\n\n")
-      append("| File | Failure Reason | Status |\n")
-      append("|------|----------------|--------|\n")
-      append("| ${getFilenameAsDetailsSummary("file.kt")} | $failureMessage | :x: |\n\n")
       append("### Failing coverage\n\n")
       append("| File | Coverage | Lines Hit | Status | Min Required |\n")
       append("|------|:--------:|----------:|:------:|:------------:|\n")
@@ -2332,9 +2304,11 @@ class RunCoverageTest {
   @Test
   fun testRunCoverage_withProtoReportFormat_savesCoverageReportProto() {
     val sampleFile = "file.kt"
+    val sampleTestFile = "fileTest.kt"
     val outputFilePath = "${tempFolder.root}/coverage_reports/file/coverage_report.pb"
     testBazelWorkspace.initEmptyWorkspace()
     tempFolder.newFile(sampleFile)
+    tempFolder.newFile(sampleTestFile)
     main(
       tempFolder.root.absolutePath,
       sampleFile,

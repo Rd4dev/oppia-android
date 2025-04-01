@@ -126,7 +126,7 @@ class BundleExtensionsTest {
     val bundle = Bundle()
     bundle.putProto("test_proto_key", TEST_MESSAGE_WITH_STR_AND_INT)
 
-    // Retrieve a "newer" version of the proto (using a proto that's binary-compatible).
+    // Retrieve a "newer" version of the proto (using a proto that is binary-compatible).
     val testMessage = bundle.getProto(
       "test_proto_key", defaultValue = TestMessage2.getDefaultInstance()
     )

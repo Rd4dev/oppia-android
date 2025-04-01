@@ -21,6 +21,7 @@ file_content_checks {
   exempted_file_name: "utility/src/main/java/org/oppia/android/util/accessibility/AccessibilityService.kt"
   exempted_file_name: "utility/src/main/java/org/oppia/android/util/accessibility/AccessibilityServiceImpl.kt"
   exempted_file_name: "utility/src/main/java/org/oppia/android/util/accessibility/FakeAccessibilityService.kt"
+  exempted_file_name: "utility/src/test/java/org/oppia/android/util/accessibility/FakeAccessibilityServiceTest.kt"
 }
 file_content_checks {
   file_path_regex: ".+?\\.kt"

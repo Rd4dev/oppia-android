@@ -59,4 +59,46 @@ class StringExtensionsTest {
 
     assertThat(stringWithSpaces.removeWhitespace()).isEqualTo("1:22:3")
   }
+
+  @Test
+  fun testContainsPlaceHolderRegex_stringWithPlaceholder_returnsTrue() {
+    val stringWithPlaceholder = "Hello %s!"
+
+    assertThat(stringWithPlaceholder.containsPlaceholderRegex()).isTrue()
+  }
+
+  @Test
+  fun testContainsPlaceHolderRegex_stringWithMultiplePlaceholders_returnsTrue() {
+    val stringWithMultiplePlaceholders = "Value1: %d, Value2: %f"
+
+    assertThat(stringWithMultiplePlaceholders.containsPlaceholderRegex()).isTrue()
+  }
+
+  @Test
+  fun testContainsPlaceHolderRegex_stringWithIndexedPlaceholders_returnsTrue() {
+    val stringWithIndexedPlaceholders = "Indexed placeholders: %1\$s (string) and %2\$d (integer)."
+
+    assertThat(stringWithIndexedPlaceholders.containsPlaceholderRegex()).isTrue()
+  }
+
+  @Test
+  fun testContainsPlaceHolderRegex_stringWithoutPlaceholder_returnsFalse() {
+    val stringWithoutPlaceholder = "String without any placeholder."
+
+    assertThat(stringWithoutPlaceholder.containsPlaceholderRegex()).isFalse()
+  }
+
+  @Test
+  fun testContainsPlaceHolderRegex_emptyString_returnsFalse() {
+    val emptyString = ""
+
+    assertThat(emptyString.containsPlaceholderRegex()).isFalse()
+  }
+
+  @Test
+  fun testContainsPlaceHolderRegex_stringWithInvalidPlacholder_returnsFalse() {
+    val stringWithInvalidPlaceholder = "Progress: 44%"
+
+    assertThat(stringWithInvalidPlaceholder.containsPlaceholderRegex()).isFalse()
+  }
 }

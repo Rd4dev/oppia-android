@@ -13,8 +13,8 @@ oppia_android_test(
     deps = [
         "//model/src/main/proto:test_models",
         "//testing",
-        "//third_party:robolectric_android-all",
         "//third_party:androidx_test_ext_truth",
+        "//third_party:robolectric_android-all",
     ],
 )
 

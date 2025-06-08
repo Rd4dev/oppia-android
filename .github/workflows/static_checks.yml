@@ -151,13 +151,6 @@ jobs:
           echo "build --disk_cache=$EXPANDED_BAZEL_CACHE_PATH" >> $HOME/.bazelrc
         shell: bash
 
-      - name: Regex Patterns Validation Check
-        # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
-        # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
-        if: ${{ !cancelled() }}
-        run: |
-          bazel run //scripts:regex_pattern_validation_check -- $(pwd)
-
       - name: Binary files check
         # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
         # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
@@ -166,6 +159,13 @@ jobs:
           bash /home/runner/work/oppia-android/oppia-android/scripts/pre-commit.sh
           echo "No binary files found in commit"
           echo "BINARY FILES CHECK PASSED"
+
+      - name: Regex Patterns Validation Check
+        # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
+        # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
+        if: ${{ !cancelled() }}
+        run: |
+          bazel run //scripts:regex_pattern_validation_check -- $(pwd)
 
       - name: XML Syntax Validation Check
         # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,

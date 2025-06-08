@@ -16,19 +16,23 @@ all_files=$(echo -e "$staged_files\n$changed_files" | sort -u)
 
 function checkForBinaries() {
   binaryFilesCount=0
+  binaryFiles=()
 
-  # Iterate over all files (both staged and changed)
-  for file in $all_files; do
-    if [ -f "$file" ] && file --mime "$file" | grep -q 'binary'; then
+  echo "$all_files" | git check-attr --stdin binary | while IFS=: read -r filename _ status; do
+    if [[ "$status" == "set" ]]; then
       ((binaryFilesCount++))
-      printf "\n\033[33m%s\033[0m" "$file"
+      binaryFiles+=("$filename")
+      printf "\n\033[33m%s\033[0m" "$filename"
     fi
   done
 
-  if [[ "${binaryFilesCount}" -gt 0 ]]; then
+  if [[ "$binaryFilesCount" -gt 0 ]]; then
     printf "\n\nPlease remove the %d detected binary file(s)." "$binaryFilesCount"
-    printf "\nBINARY FILES CHECK FAILED"
+    printf "\nBINARY FILES CHECK FAILED\n"
     exit 1
+  else
+    echo "No binary files found in commit"
+    echo "BINARY FILES CHECK PASSED"
   fi
 }
 

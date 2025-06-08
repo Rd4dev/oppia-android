@@ -13,7 +13,7 @@ check_binary_files() {
     echo_error "\nBINARY FILES CHECK FAILED\n"
     exit 1
   else
-    echo "No binary files found in commit"
+    echo "No binary files detected in the commit"
     echo_success "\nBINARY FILES CHECK PASSED\n"
   fi
 }

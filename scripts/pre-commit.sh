@@ -1,6 +1,7 @@
 #!/bin/bash
 
-binary_files=$(git diff --cached --numstat | awk '$1 == "-" && $2 == "-" { print $3 }')
+base_commit=$(git merge-base origin/develop HEAD)
+binary_files=$(git diff --numstat "$base_commit"...HEAD | awk '$1 == "-" && $2 == "-" { print $3 }')
 binary_files_count=$(echo "$binary_files" | grep -c . || true)
 
 if [[ "$binary_files_count" -gt 0 ]]; then

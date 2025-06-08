@@ -3,7 +3,7 @@
 #Defines color codes for output formatting
 
 # Red color for error messages
-RED='\033[0;31m'
+RED="\033[0;31m"
 
 # Green color for success messages
 GREEN='\033[0;32m'

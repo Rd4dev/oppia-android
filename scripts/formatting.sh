@@ -16,15 +16,15 @@ NC='\033[0m'
 
 # Function to print an error message in red
 function echo_error() {
-    echo -e "${RED}$1${NC}"
+    printf "${RED}$1${NC}"
 }
 
 # Function to print a success message in green
 function echo_success() {
-    echo -e "${GREEN}$1${NC}"
+    printf "${GREEN}$1${NC}"
 }
 
 # Function to print a warning message in yellow
 function echo_warning() {
-    echo -e "${YELLOW}$1${NC}"
+    printf "${YELLOW}$1${NC}"
 }

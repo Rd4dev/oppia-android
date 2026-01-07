@@ -147,6 +147,13 @@ jobs:
           echo "build --disk_cache=$EXPANDED_BAZEL_CACHE_PATH" >> $HOME/.bazelrc
         shell: bash
 
+      - name: Binary files check
+        # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
+        # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
+        if: ${{ !cancelled() }}
+        run: |
+          bash /home/runner/work/oppia-android/oppia-android/scripts/binary_files_check.sh
+
       - name: Regex Patterns Validation Check
         # The expression if: ${{ !cancelled() }} runs a job or step regardless of its success or failure while responding to cancellations,
         # serving as a cancellation-compliant alternative to if: ${{ always() }} in concurrent workflows.
